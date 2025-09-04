@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Erudyte Commons</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Erudyte Commons">
+  
+
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon and Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon/site.webmanifest">
+    <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#6366f1">
+    <link rel="shortcut icon" href="assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#080032">
+    <meta name="msapplication-config" content="assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Vendor Styles -->
+    <link rel="stylesheet" media="screen" href="assets/vendor/boxicons/css/boxicons.min.css"/>
+    <link rel="stylesheet" media="screen" href="assets/vendor/swiper/swiper-bundle-library.css"/>
+    <link rel="stylesheet" media="screen" href="assets/vendor/lightgallery/css/lightgallery-bundle.min.css"/>
+
+    <!-- Main Theme Styles + Bootstrap -->
+    <link rel="stylesheet" media="screen" href="assets/css/people-theme.css">
+
+    <!-- Page loading styles -->
+    <style>
+      .page-loading {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all .4s .2s ease-in-out;
+        transition: all .4s .2s ease-in-out;
+        background-color: #fff;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 9999;
+      }
+      .dark-mode .page-loading {
+        background-color: #0b0f19;
+      }
+      .page-loading.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .page-loading-inner {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        -webkit-transition: opacity .2s ease-in-out;
+        transition: opacity .2s ease-in-out;
+        opacity: 0;
+      }
+      .page-loading.active > .page-loading-inner {
+        opacity: 1;
+      }
+      .page-loading-inner > span {
+        display: block;
+        font-size: 1rem;
+        font-weight: normal;
+        color: #9397ad;
+      }
+      .dark-mode .page-loading-inner > span {
+        color: #fff;
+        opacity: .6;
+      }
+      .page-spinner {
+        display: inline-block;
+        width: 2.75rem;
+        height: 2.75rem;
+        margin-bottom: .75rem;
+        vertical-align: text-bottom;
+        border: .15em solid #b4b7c9;
+        border-right-color: transparent;
+        border-radius: 50%;
+        -webkit-animation: spinner .75s linear infinite;
+        animation: spinner .75s linear infinite;
+      }
+      .dark-mode .page-spinner {
+        border-color: rgba(255,255,255,.4);
+        border-right-color: transparent;
+      }
+      @-webkit-keyframes spinner {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes spinner {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+
+    <!-- Theme mode -->
+    <script>
+      let mode = window.localStorage.getItem('mode'),
+          root = document.getElementsByTagName('html')[0];
+      if (mode !== null && mode === 'dark') {
+        root.classList.add('dark-mode');
+      } else {
+        root.classList.remove('dark-mode');
+      }
+    </script>
+
+    <!-- Page loading scripts -->
+    <script>
+      (function () {
+        window.onload = function () {
+          const preloader = document.querySelector('.page-loading');
+          preloader.classList.remove('active');
+          setTimeout(function () {
+            preloader.remove();
+          }, 1000);
+        };
+      })();
+    </script>
+  </head>
+
+
+  <!-- Body -->
+  <body>
+
+    <!-- Page loading spinner -->
+    <div class="page-loading active">
+      <div class="page-loading-inner">
+        <div class="page-spinner"></div><span>Loading...</span>
+      </div>
+    </div>
+
+
+    <!-- Page wrapper for sticky footer -->
+    <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+    <main class="page-wrapper">
+
+
+      <!-- Navbar -->
+    <%- include('navbar') %>
+      <!-- Hero -->
+      <section class="position-relative pt-5">
+
+        <!-- Background -->
+        <div class="position-fixed top-0 start-0 w-100 bg-position-bottom-center bg-size-cover bg-repeat-0" style="background-image: url(assets/img/about/hero-bg.svg);">
+          <div class="d-lg-none" style="height: 960px;"></div>
+          <div class="d-none d-lg-block" style="height: 768px;"></div>
+        </div>
+
+        
+
+                         <!--Search form--> 
+                         <form class="input-group mb-4">
+                          <input type="text" placeholder="Search the library..." class="form-control rounded pe-5">
+                          <i class='bx bx-search position-absolute top-50 end-0 translate-middle-y me-3 fs-lg zindex-5'></i>
+                        </form>
+
+                        
+        
+                       <!--event cards-->
+                       <div class="card card-body3 border-0 shadow-sm position-relative">
+  
+                        <!-- Comment -->
+  <div class="d-flex align-items-center justify-content-between pb-2 mb-1">
+    <div class="d-flex align-items-center me-3">
+      <img src="assets/img/avatar/03.jpg" class="rounded-circle" width="48" alt="Avatar">
+      <div class="ps-3">
+        <h6 class="fw-semibold mb-0">Esther Howard</h6>
+        <span class="fs-sm text-muted">Principal @George Washington Elemtary</span>
+        <br>
+        <a>Skills:</a>
+        <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Strategy</a>
+        <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Leadership</a>
+        <br>
+        <a>Interests:</a>
+        <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Entrepreneurship</a>
+        <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">investing</a>
+        <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Digital</a>
+      </div>
+    </div>
+    <a href="#" class="nav-link fs-lg px-0">
+        <i class="bx bxl-linkedin"></i>
+      </a>
+
+</div>
+                        <span class="position-absolute top-0 start-0 w-100 h-100  opacity-10 rounded-3"></span>
+                        <div class="position-relative zindex-2">
+                         
+                                                 <!--****event cards****-->
+                       <div class="card card-body3-2 border-0 shadow-sm position-relative">
+  
+                        <!-- Comment -->
+  <div class="d-flex align-items-center justify-content-between pb-2 mb-1">
+    <div class="d-flex align-items-center me-3">
+      <img src="assets/img/avatar/04.jpg" class="rounded-circle" width="48" alt="Avatar">
+      <div class="ps-3">
+        <h6 class="fw-semibold mb-0">Mia Nunez</h6>
+        <span class="fs-sm text-muted">Teacher @I.S. 237</span>
+        <br>
+        <a>Skills:</a>
+        <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Teamwork</a>
+        <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Adapting</a>
+        <br>
+        <a>Interests:</a>
+        <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Entrepreneurship</a>
+        <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">investing</a>
+        <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Digital</a>
+      </div>
+    </div>
+    <a href="#" class="nav-link fs-lg px-0">
+      <i class="bx bxl-linkedin"></i>
+      <i class="bx bxl-github"></i>
+    </a>
+</div>
+<span class="position-absolute top-0 start-0 w-100 h-100  opacity-10 rounded-3"></span>
+<div class="position-relative zindex-2">
+
+                                                 <!--****event cards****-->
+                                                 <div class="card card-body3-2 border-0 shadow-sm position-relative">
+  
+                                                  <!-- Comment -->
+                            <div class="d-flex align-items-center justify-content-between pb-2 mb-1">
+                              <div class="d-flex align-items-center me-3">
+                                <img src="assets/img/avatar/04.jpg" class="rounded-circle" width="48" alt="Avatar">
+                                <div class="ps-3">
+                                  <h6 class="fw-semibold mb-0">Mia Nunez</h6>
+                                  <span class="fs-sm text-muted">Teacher @I.S. 237</span>
+                                  <br>
+                                  <a>Skills:</a>
+                                  <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Teamwork</a>
+                                  <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Adapting</a>
+                                  <br>
+                                  <a>Interests:</a>
+                                  <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Entrepreneurship</a>
+                                  <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">investing</a>
+                                  <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Digital</a>
+                                </div>
+                              </div>
+                              <a href="#" class="nav-link fs-lg px-0">
+                                <i class="bx bxl-linkedin"></i>
+                                <i class="bx bxl-github"></i>
+                              </a>
+                          </div>
+                          <span class="position-absolute top-0 start-0 w-100 h-100  opacity-10 rounded-3"></span>
+                          <div class="position-relative zindex-2">
+
+                                                                             <!--****event cards****-->
+                       <div class="card card-body3-2 border-0 shadow-sm position-relative">
+  
+                        <!-- Comment -->
+  <div class="d-flex align-items-center justify-content-between pb-2 mb-1">
+    <div class="d-flex align-items-center me-3">
+      <img src="assets/img/avatar/04.jpg" class="rounded-circle" width="48" alt="Avatar">
+      <div class="ps-3">
+        <h6 class="fw-semibold mb-0">Mia Nunez</h6>
+        <span class="fs-sm text-muted">Teacher @I.S. 237</span>
+        <br>
+        <a>Skills:</a>
+        <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Teamwork</a>
+        <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Adapting</a>
+        <br>
+        <a>Interests:</a>
+        <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Entrepreneurship</a>
+        <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">investing</a>
+        <a href="#" class="badge fs-sm text-nav bg-secondary text-decoration-none">Digital</a>
+      </div>
+    </div>
+    <a href="#" class="nav-link fs-lg px-0">
+      <i class="bx bxl-linkedin"></i>
+      <i class="bx bxl-github"></i>
+    </a>
+</div>
+<span class="position-absolute top-0 start-0 w-100 h-100  opacity-10 rounded-3"></span>
+<div class="position-relative zindex-2">
+                         
+ <!-- Categories -->
+ <div class="card card-body4 mb-4">
+  <h3 class="h5">Categories</h3>
+  <ul class="nav flex-column fs-sm">
+    <li class="nav-item mb-1">
+      <a href="#" class="nav-link py-1 px-0 active">All topics <span class="fw-normal opacity-60 ms-1">(48)</span></a>
+    </li>
+    <li class="nav-item mb-1">
+      <a href="#" class="nav-link py-1 px-0">Digital <span class="fw-normal opacity-60 ms-1">(12)</span></a>
+    </li>
+    <li class="nav-item mb-1">
+      <a href="#" class="nav-link py-1 px-0">Marketing <span class="fw-normal opacity-60 ms-1">(5)</span></a>
+    </li>
+    <li class="nav-item mb-1">
+      <a href="#" class="nav-link py-1 px-0">Startups <span class="fw-normal opacity-60 ms-1">(10)</span></a>
+    </li>
+    <li class="nav-item mb-1">
+      <a href="#" class="nav-link py-1 px-0">Technology <span class="fw-normal opacity-60 ms-1">(9)</span></a>
+    </li>
+    <li class="nav-item mb-1">
+      <a href="#" class="nav-link py-1 px-0">Business <span class="fw-normal opacity-60 ms-1">(4)</span></a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link py-1 px-0">Processes & Tools <span class="fw-normal opacity-60 ms-1">(3)</span></a>
+    </li>
+  </ul>
+</div>
+
+                <!-- Tags -->
+                <div class="card card-body5 mb-4">
+                  <h3 class="h5">Tags</h3>
+                  <div class="d-flex flex-wrap">
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#lifestyle</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#ux</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#tech</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#user</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#software</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#it</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#network</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#engineering</a>
+                  </div>
+                </div>
+
+               <!-- Categories -->
+ <div class="card card-body4-2 -2mb-4">
+  <h3 class="h5">Colleagues</h3>
+  <ul class="nav flex-column fs-sm">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide h-auto">
+
+        <!-- Contact -->
+        <a href="#" class="d-flex align-items-start border-bottom text-decoration-none bg-faded-primary-hover py-3 px-4">
+          <img src="assets/img/avatar/19.jpg" class="rounded-circle" width="40" alt="Devon Lane">
+          <div class="w-100 ps-2 ms-1">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <h6 class="mb-0 me-2">Devon Lane</h6>
+              <span class="fs-xs text-muted">18:02</span>
+            </div>
+            <p class="fs-sm text-body mb-0">Dolor, quam habitant...</p>
+          </div>
+        </a>
+
+        <!-- Contact (active) -->
+        <a href="#" class="d-flex align-items-start border-bottom text-decoration-none bg-faded-primary-hover py-3 px-4">
+          <img src="assets/img/avatar/20.jpg" class="rounded-circle" width="40" alt="Albert Flores">
+          <div class="w-100 ps-2 ms-1">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <h6 class="mb-0 me-2">Albert Flores</h6>
+              <span class="fs-xs text-muted">17:33</span>
+            </div>
+            <p class="fs-sm text-body mb-0">You are welcome 😊</p>
+          </div>
+        </a>
+
+        <!-- Contact -->
+        <a href="#" class="d-flex align-items-start border-bottom text-decoration-none bg-faded-primary-hover py-3 px-4">
+          <img src="assets/img/avatar/21.jpg" class="rounded-circle" width="40" alt="Bessie Cooper">
+          <div class="w-100 ps-2 ms-1">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <h6 class="mb-0 me-2">Bessie Cooper</h6>
+              <span class="fs-xs text-muted">12:04</span>
+            </div>
+            <p class="fs-sm text-body mb-0">Typing...</p>
+          </div>
+        </a>
+
+        <!-- Contact -->
+        <a href="#" class="d-flex align-items-start border-bottom text-decoration-none bg-faded-primary-hover py-3 px-4">
+          <img src="assets/img/avatar/22.jpg" class="rounded-circle" width="40" alt="Ronald Richards">
+          <div class="w-100 ps-2 ms-1">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <h6 class="mb-0 me-2">Ronald Richards</h6>
+              <span class="fs-xs text-muted">08:00</span>
+            </div>
+            <p class="fs-sm text-body mb-0">Ok 👌</p>
+          </div>
+        </a>
+
+        <!-- Contact -->
+        <a href="#" class="d-flex align-items-start border-bottom text-decoration-none bg-faded-primary-hover py-3 px-4">
+          <img src="assets/img/avatar/23.jpg" class="rounded-circle" width="40" alt="Robert Fox">
+          <div class="w-100 ps-2 ms-1">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <h6 class="mb-0 me-2">Robert Fox</h6>
+              <span class="fs-xs text-muted">14 Nov</span>
+            </div>
+            <p class="fs-sm text-body mb-0">Praesent ut mi.</p>
+          </div>
+        </a>
+
+        <!-- Contact -->
+        <a href="#" class="d-flex align-items-start border-bottom text-decoration-none bg-faded-primary-hover py-3 px-4">
+          <img src="assets/img/avatar/24.jpg" class="rounded-circle" width="40" alt="Jerome Bell">
+          <div class="w-100 ps-2 ms-1">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <h6 class="mb-0 me-2">Jerome Bell</h6>
+              <span class="fs-xs text-muted">8 Oct</span>
+            </div>
+            <p class="fs-sm text-body mb-0">In pretium a eget nunc...</p>
+          </div>
+        </a>
+
+        <!-- Contact -->
+        <a href="#" class="d-flex align-items-start border-bottom text-decoration-none bg-faded-primary-hover py-3 px-4">
+          <img src="assets/img/avatar/25.jpg" class="rounded-circle" width="40" alt="Kathryn Murphy">
+          <div class="w-100 ps-2 ms-1">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <h6 class="mb-0 me-2">Kathryn Murphy</h6>
+              <span class="fs-xs text-muted">16 Sep</span>
+            </div>
+            <p class="fs-sm text-body mb-0">Tempor amet?</p>
+          </div>
+        </a>
+
+        <!-- Contact -->
+        <a href="#" class="d-flex align-items-start border-bottom text-decoration-none bg-faded-primary-hover py-3 px-4">
+          <img src="assets/img/avatar/26.jpg" class="rounded-circle" width="40" alt="Dianne Russell">
+          <div class="w-100 ps-2 ms-1">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <h6 class="mb-0 me-2">Dianne Russell</h6>
+              <span class="fs-xs text-muted">27 Aug</span>
+            </div>
+            <p class="fs-sm text-body mb-0">Vehicula accumsan leo.</p>
+          </div>
+        </a>
+
+        <!-- Contact -->
+        <a href="#" class="d-flex align-items-start border-bottom text-decoration-none bg-faded-primary-hover py-3 px-4">
+          <img src="assets/img/avatar/27.jpg" class="rounded-circle" width="40" alt="Cody Fisher">
+          <div class="w-100 ps-2 ms-1">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <h6 class="mb-0 me-2">Cody Fisher</h6>
+              <span class="fs-xs text-muted">18 Aug</span>
+            </div>
+            <p class="fs-sm text-body mb-0">Erat cum amet viverra...</p>
+          </div>
+        </a>
+
+        <!-- Contact -->
+        <a href="#" class="d-flex align-items-start text-decoration-none bg-faded-primary-hover py-3 px-4">
+          <img src="assets/img/avatar/28.jpg" class="rounded-circle" width="40" alt="Darlene Robertson">
+          <div class="w-100 ps-2 ms-1">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <h6 class="mb-0 me-2">Darlene Robertson</h6>
+              <span class="fs-xs text-muted">13 Jul</span>
+            </div>
+            <p class="fs-sm text-body mb-0">Orci convallis eget sit...</p>
+          </div>
+
+  </ul>
+</div>
+
+    <!-- Footer -->
+    <!--
+    <footer class="footer dark-mode bg-dark border-top border-light pt-5 pb-4 pb-lg-5">
+      <div class="container pt-lg-4">
+        <div class="row pb-5">
+          <div class="col-lg-4 col-md-6">
+            <div class="navbar-brand text-dark p-0 me-0 mb-3 mb-lg-4">
+              <img src="assets/img/logo.svg" width="47" alt="Erudyte">
+              Erudtion Inc.
+            </div>
+            <p class="fs-sm text-light opacity-70 pb-lg-3 mb-4">Proin ipsum pharetra, senectus eget scelerisque varius pretium platea velit. Lacus, eget eu vitae nullam proin turpis etiam mi sit. Non feugiat feugiat egestas nulla nec. Arcu tempus, eget elementum dolor ullamcorper sodales ultrices eros.</p>
+            <form class="needs-validation" novalidate>
+              <label for="subscr-email" class="form-label">Subscribe to our newsletter</label>
+              <div class="input-group">
+                <input type="email" id="subscr-email" class="form-control rounded-start ps-5" placeholder="Your email" required>
+                <i class="bx bx-envelope fs-lg text-muted position-absolute top-50 start-0 translate-middle-y ms-3 zindex-5"></i>
+                <div class="invalid-tooltip position-absolute top-100 start-0">Please provide a valid email address.</div>
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+              </div>
+            </form>
+          </div>
+          <div class="col-xl-6 col-lg-7 col-md-5 offset-xl-2 offset-md-1 pt-4 pt-md-1 pt-lg-0">
+            <div id="footer-links" class="row">
+              <div class="col-lg-4">
+                <h6 class="mb-2">
+                  <a href="#useful-links" class="d-block text-dark dropdown-toggle d-lg-none py-2" data-bs-toggle="collapse">Useful Links</a>
+                </h6>
+                <div id="useful-links" class="collapse d-lg-block" data-bs-parent="#footer-links">
+                  <ul class="nav flex-column pb-lg-1 mb-lg-3">
+                    <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Home</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Services</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Case Studies</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">About Us</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">News &amp; Insights</a></li>
+                  </ul>
+                  <ul class="nav flex-column mb-2 mb-lg-0">
+                    <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Terms &amp; Conditions</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Privacy Policy</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-xl-4 col-lg-3">
+                <h6 class="mb-2">
+                  <a href="#social-links" class="d-block text-dark dropdown-toggle d-lg-none py-2" data-bs-toggle="collapse">Socials</a>
+                </h6>
+                <div id="social-links" class="collapse d-lg-block" data-bs-parent="#footer-links">
+                  <ul class="nav flex-column mb-2 mb-lg-0">
+                    <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Facebook</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">LinkedIn</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Twitter</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Instagram</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-xl-4 col-lg-5 pt-2 pt-lg-0">
+                <h6 class="mb-2">Contact Us</h6>
+                <a href="mailto:email@example.com" class="fw-medium">email@example.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="nav d-block fs-xs text-center text-md-start pb-2 pb-lg-0 mb-0">
+          <span class="text-light opacity-50">&copy; All rights reserved. </span>
+          <a class="nav-link d-inline-block p-0" href="http://erudtion.com/" target="_blank" rel="noopener">Erudyte.</a>
+        </p>
+      </div>
+    </footer>
+
+  -->
+    <!-- Back to top button -->
+    <a href="#top" class="btn-scroll-top" data-scroll>
+      <span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span>
+      <i class="btn-scroll-top-icon bx bx-chevron-up"></i>
+    </a>
+
+
+    <!-- Vendor Scripts -->
+    <script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/lightgallery/lightgallery.min.js"></script>
+    <script src="assets/vendor/lightgallery/plugins/video/lg-video.min.js"></script>
+
+    <!-- Main Theme Script -->
+    <script src="assets/js/theme.min.js"></script>
+  </body>
+</html>

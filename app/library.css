@@ -1,0 +1,66 @@
+:root {
+  --rounded-lg: 1rem;
+  --rounded-xl: 1.25rem;
+  --shadow-sm: 0 2px 8px rgba(16, 24, 40, 0.06);
+}
+
+/* General */
+.bg-body {
+  background: #f7f8fa;
+}
+.page-title {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Chips */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem .9rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #111827;
+  text-decoration: none;
+  border: 1px solid #e5e7eb;
+  transition: .15s ease-in-out;
+}
+.chip:hover {
+  border-color: #d1d5db;
+  background: #fcfcfd;
+}
+.chip-active {
+  background: #111827;
+  color: #fff;
+  border-color: #111827;
+}
+
+/* Cards */
+.card.course-card {
+  border: 1px solid #eef0f3;
+  border-radius: var(--rounded-xl);
+  overflow: hidden;
+}
+.card.course-card .card-img-top img {
+  width: 100%;
+  height: 100%;
+}
+.card.course-card .card-body {
+  padding: 1rem 1rem 1.1rem;
+}
+.card.course-card .bi-star-fill {
+  color: #f59e0b;
+}
+.badge.text-bg-success-subtle {
+  background: #eaf6ec !important;
+  color: #15803d !important;
+}
+
+/* Small utility */
+.letter-1 {
+  letter-spacing: .08em;
+}
+.object-fit-cover {
+  object-fit: cover;
+}

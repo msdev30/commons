@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' 
+      https://cdn.jsdelivr.net 
+      https://*.amazonaws.com;
+    style-src 'self' 'unsafe-inline' 
+      https://fonts.googleapis.com 
+      https://fonts.gstatic.com 
+      https://cdn.jsdelivr.net 
+      https://cdnjs.cloudflare.com;
+    font-src 'self' 
+      https://fonts.gstatic.com 
+      data:;
+    img-src 'self' 
+      https: 
+      data:;
+    connect-src 'self' 
+      http://localhost:* 
+      https://*.amazonaws.com 
+      https://*.amazoncognito.com;
+    frame-src 'self';
+    object-src 'none'">
+
+  <meta charset="utf-8">
+  <title>Erudyte Commons</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Erudyte Commons">
+  <meta name="keywords" content="teacher hub, educator network, STEM education, brand resources, workforce impact, inclusive education, language accessibility, neurodiverse learning, learning resources, online courses, conference landing, e-learning, teaching tools, teacher training, education platform">
+  <meta name="author" content="Erudtion Inc">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Favicon and Touch Icons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+  <link rel="manifest" href="assets/favicon/site.webmanifest">
+  <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#6366f1">
+  <link rel="shortcut icon" href="assets/favicon/favicon.ico">
+  <meta name="msapplication-TileColor" content="#080032">
+  <meta name="msapplication-config" content="assets/favicon/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Vendor Styles -->
+  <link rel="stylesheet" media="screen" href="assets/vendor/boxicons/css/boxicons.min.css"/>
+  <link rel="stylesheet" media="screen" href="assets/css/signin-theme.css">
+
+  <!-- Page loading styles -->
+  <style>
+    .auth-error {
+      display: none;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      background-color: rgb(207, 104, 104);
+      color: rgb(255, 255, 255);
+      border-radius: 0.5rem;
+      text-align: center;
+    }
+
+    .page-loading {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -webkit-transition: all .4s .2s ease-in-out;
+      transition: all .4s .2s ease-in-out;
+      background-color: #fff;
+      opacity: 0;
+      visibility: hidden;
+      z-index: 9999;
+    }
+    
+    .dark-mode .page-loading {
+      background-color: #0b0f19;
+    }
+    
+    .page-loading.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .page-loading-inner {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      -webkit-transform: translateY(-50%);
+      transform: translateY(-50%);
+      -webkit-transition: opacity .2s ease-in-out;
+      transition: opacity .2s ease-in-out;
+      opacity: 0;
+    }
+    
+    .page-loading.active > .page-loading-inner {
+      opacity: 1;
+    }
+    
+    .page-loading-inner > span {
+      display: block;
+      font-size: 1rem;
+      font-weight: normal;
+      color: #9397ad;
+    }
+    
+    .dark-mode .page-loading-inner > span {
+      color: #fff;
+      opacity: .6;
+    }
+    
+    .page-spinner {
+      display: inline-block;
+      width: 2.75rem;
+      height: 2.75rem;
+      margin-bottom: .75rem;
+      vertical-align: text-bottom;
+      border: .15em solid #b4b7c9;
+      border-right-color: transparent;
+      border-radius: 50%;
+      -webkit-animation: spinner .75s linear infinite;
+      animation: spinner .75s linear infinite;
+    }
+    
+    .dark-mode .page-spinner {
+      border-color: rgba(255,255,255,.4);
+      border-right-color: transparent;
+    }
+    
+    @keyframes spinner {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+  <!-- AWS Scripts -->
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1550.0.min.js"></script>
+</head>
+
+<body>
+  <!-- Page loading spinner -->
+  <div class="page-loading active">
+    <div class="page-loading-inner">
+      <div class="page-spinner"></div>
+      <span>Loading...</span>
+    </div>
+  </div>
+
+  <!-- Page wrapper -->
+  <main class="page-wrapper">
+    <section class="position-relative h-100 pt-5 pb-4">
+      <!-- Sign in form -->
+      <div class="container d-flex flex-wrap justify-content-center justify-content-xl-start h-100 pt-5">
+        <div class="w-100 align-self-end pt-1 pt-md-4 pb-4" style="max-width: 526px;">
+          <h1 class="text-center text-xl-start">Welcome Back</h1>
+          <p class="text-center text-xl-start pb-3 mb-3">Don't have an account yet? <a href="/account-signup">Register here.</a></p>
+
+          <!-- Flash Messages -->
+          <p class="auth-error"></p>
+          <% if (typeof messages !== 'undefined' && messages) { %>
+            <% Object.entries(messages).forEach((obj) => { %>
+              <% var category = obj[0] %>
+              <% var message = obj[1] %>
+
+              <% if (category === 'error') { %>
+                <p style="background-color: rgb(207, 104, 104); padding:0.5rem; color:rgb(255, 255, 255); border-radius:0.5rem; text-align:center">
+                  <%= message %>
+                </p>
+              <% } else { %>
+                <p style="background-color: rgb(127, 220, 181); padding:0.5rem; color:rgb(255, 255, 255); border-radius:0.5rem; text-align:center">
+                  <%= message %>
+                </p>
+              <% } %>
+            <% }); %>
+          <% } %>
+
+            <!-- Sign-in form -->
+            <form id="loginForm" class="needs-validation" novalidate>
+
+              <!-- Email input -->
+              <div class="position-relative mb-4">
+                <label for="email" class="form-label fs-base">Email</label>
+                <input type="email" name="email" id="email" class="form-control form-control-lg" required>
+                <div class="invalid-feedback position-absolute start-0 top-100">Please enter a valid email address!</div>
+              </div>
+              <!-- Password input -->
+              <div class="mb-4">
+                <label for="password" class="form-label fs-base">Password</label>
+                <div class="password-toggle">
+                  <input type="password" name="password" id="password" class="form-control form-control-lg" required>
+                  <label class="password-toggle-btn" aria-label="Show/hide password">
+                    <input class="password-toggle-check" type="checkbox">
+                    <span class="password-toggle-indicator"></span>
+                  </label>
+                  <div class="invalid-feedback position-absolute start-0 top-100">Please enter your password!</div>
+                </div>
+              </div>
+              <!-- Remember me checkbox -->
+              <div class="mb-4">
+                <div class="form-check">
+                  <input type="checkbox" id="remember" name="remember" class="form-check-input">
+                  <label for="remember" class="form-check-label fs-base">Remember me</label>
+                </div>
+              </div>
+              <!-- Sign-in button -->
+              <button type="submit" class="btn btn-primary shadow-primary btn-lg w-100">Sign in</button>
+            </form>
+            <a href="#" class="btn btn-link btn-lg w-100">Forgot your password?</a>
+            <!-- Social sign-in options -->
+            <hr class="my-4">
+            <h6 class="text-center mb-4">Or sign in with your social network</h6>
+            <div class="row row-cols-1 row-cols-sm-2">
+              <div class="col mb-3">
+                <button id="google-signin" class="btn btn-icon btn-secondary btn-google btn-lg w-100">
+                  <i class="bx bxl-google fs-xl me-2"></i>
+                  Google
+                </button>
+              </div>
+              <div class="col mb-3">
+                <button id="facebook-signin" class="btn btn-icon btn-secondary btn-facebook btn-lg w-100">
+                  <i class="bx bxl-facebook fs-xl me-2"></i>
+                  Facebook
+                </button>
+              </div>
+            </div>
+          </div>
+          </div>
+
+         <!-- Background -->
+      <div class="position-absolute top-0 end-0 w-50 h-100 bg-position-center bg-repeat-0 bg-size-cover d-none d-xl-block" style="background-image: url(assets/img/account/signin-bg.jpg);"></div>
+    </section>
+  </main>
+
+  <!-- Back to top button -->
+  <a href="#top" class="btn-scroll-top" data-scroll>
+    <span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span>
+    <i class="btn-scroll-top-icon bx bx-chevron-up"></i>
+  </a>
+
+  <!-- Vendor Scripts -->
+  <script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+
+  <!-- Theme mode -->
+  <script>
+    let mode = window.localStorage.getItem('mode'),
+        root = document.getElementsByTagName('html')[0];
+    if (mode !== null && mode === 'dark') {
+      root.classList.add('dark-mode');
+    } else {
+      root.classList.remove('dark-mode');
+    }
+  </script>
+
+  <!-- Page loading scripts -->
+  <script>
+    (function () {
+      window.onload = function () {
+        const preloader = document.querySelector('.page-loading');
+        preloader.classList.remove('active');
+        setTimeout(function () {
+          preloader.remove();
+        }, 1000);
+      };
+    })();
+  </script>
+
+  <!-- Theme initialization -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+    // Login form handler
+const loginForm = document.getElementById('loginForm');
+if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Check form validation first
+        if (!loginForm.checkValidity()) {
+            loginForm.classList.add('was-validated');
+            return;
+        }
+
+        const errorEl = document.querySelector('.auth-error');
+        if (errorEl) {
+            errorEl.style.display = 'none';
+            errorEl.textContent = '';
+        }
+        
+        try {
+          const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value,
+                    remember: document.getElementById('remember').checked
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            if (data.success) {
+                window.location.href = data.redirect;
+            } else {
+                if (errorEl) {
+                    errorEl.textContent = data.error || 'Login failed';
+                    errorEl.style.display = 'block';
+                }
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            if (errorEl) {
+                errorEl.textContent = error.message === 'Failed to fetch' 
+                    ? 'Network error. Please check your connection.' 
+                    : 'Login failed. Please try again.';
+                errorEl.style.display = 'block';
+            }
+        }
+    });
+}
+
+    // Theme mode toggle
+    const toggleTheme = () => {
+        const root = document.documentElement;
+        root.classList.toggle('dark-mode');
+        localStorage.setItem('mode', root.classList.contains('dark-mode') ? 'dark' : 'light');
+    };
+
+    // Password visibility toggle
+    const setupPasswordToggles = () => {
+        document.querySelectorAll('.password-toggle-check').forEach(toggle => {
+            toggle.addEventListener('change', (e) => {
+                const input = e.target.closest('.password-toggle').querySelector('input[type="password"]');
+                input.type = e.target.checked ? 'text' : 'password';
+            });
+        });
+    };
+
+    setupPasswordToggles();
+});
+  </script>
+
+  <!-- Cognito configuration -->
+  <script>
+    window.COGNITO_CONFIG = {
+      userPoolId: '<%= process.env.COGNITO_USER_POOL_ID %>',
+      clientId: '<%= process.env.COGNITO_CLIENT_ID %>',
+      redirectUri: '<%= process.env.COGNITO_REDIRECT_URI %>'
+    };
+  </script>
+  
+  <!-- Provider auth -->
+  <script type="module" src="assets/js/config.js"></script>
+</body>
+</html>

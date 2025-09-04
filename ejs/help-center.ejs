@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Erudyte Commons</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Erudyte Commons">
+    <meta name="keywords" content="teacher hub, educator network, STEM education, brand resources, workforce impact, inclusive education, language accessibility, neurodiverse learning, learning resources, online courses, conference landing, e-learning, teaching tools, teacher training, education platform">
+    <meta name="author" content="Erudtion Inc">
+  
+
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon and Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon/site.webmanifest">
+    <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#6366f1">
+    <link rel="shortcut icon" href="assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#080032">
+    <meta name="msapplication-config" content="assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Vendor Styles -->
+    <link rel="stylesheet" media="screen" href="assets/vendor/boxicons/css/boxicons.min.css"/>
+    <link rel="stylesheet" media="screen" href="assets/vendor/swiper/swiper-bundle-library.css"/>
+    <link rel="stylesheet" media="screen" href="assets/vendor/lightgallery/css/lightgallery-bundle.min.css"/>
+
+    <!-- Main Theme Styles + Bootstrap -->
+    <link rel="stylesheet" media="screen" href="assets/css/people-theme.css">
+
+    <!-- Page loading styles -->
+    <style>
+      .page-loading {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all .4s .2s ease-in-out;
+        transition: all .4s .2s ease-in-out;
+        background-color: #fff;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 9999;
+      }
+      .dark-mode .page-loading {
+        background-color: #0b0f19;
+      }
+      .page-loading.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .page-loading-inner {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        -webkit-transition: opacity .2s ease-in-out;
+        transition: opacity .2s ease-in-out;
+        opacity: 0;
+      }
+      .page-loading.active > .page-loading-inner {
+        opacity: 1;
+      }
+      .page-loading-inner > span {
+        display: block;
+        font-size: 1rem;
+        font-weight: normal;
+        color: #9397ad;
+      }
+      .dark-mode .page-loading-inner > span {
+        color: #fff;
+        opacity: .6;
+      }
+      .page-spinner {
+        display: inline-block;
+        width: 2.75rem;
+        height: 2.75rem;
+        margin-bottom: .75rem;
+        vertical-align: text-bottom;
+        border: .15em solid #b4b7c9;
+        border-right-color: transparent;
+        border-radius: 50%;
+        -webkit-animation: spinner .75s linear infinite;
+        animation: spinner .75s linear infinite;
+      }
+      .dark-mode .page-spinner {
+        border-color: rgba(255,255,255,.4);
+        border-right-color: transparent;
+      }
+      @-webkit-keyframes spinner {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes spinner {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+
+    <!-- Theme mode -->
+    <script>
+        let mode = window.localStorage.getItem('mode'),
+            root = document.getElementsByTagName('html')[0];
+        if (mode !== null && mode === 'dark') {
+            root.classList.add('dark-mode');
+        } else {
+            root.classList.remove('dark-mode');
+        }
+    </script>
+
+    <!-- Page loading scripts -->
+    <script>
+      (function () {
+        window.onload = function () {
+          const preloader = document.querySelector('.page-loading');
+          preloader.classList.remove('active');
+          setTimeout(function () {
+            preloader.remove();
+          }, 1000);
+        };
+      })();
+    </script>
+  </head>
+
+
+  <!-- Body -->
+  <body>
+
+    <!-- Page loading spinner -->
+    <div class="page-loading active">
+      <div class="page-loading-inner">
+        <div class="page-spinner"></div><span>Loading...</span>
+      </div>
+    </div>
+
+
+    <!-- Page wrapper for sticky footer -->
+    <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+    <main class="page-wrapper">
+
+
+      <!-- Navbar -->
+    <%- include('navbar') %>
+      <!-- Hero -->
+      <section class="position-relative pt-5">
+
+        <!-- Background -->
+        <div class="position-fixed top-0 start-0 w-100 bg-position-bottom-center bg-size-cover bg-repeat-0" style="background-image: url(assets/img/about/hero-bg.svg);">
+          <div class="d-lg-none" style="height: 960px;"></div>
+          <div class="d-none d-lg-block" style="height: 768px;"></div>
+        </div>
+
+
+<!-- /Breadcrumb -->
+			<!-- Breadcrumb -->
+			<div class="page-banner">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12 col-12">
+							<h1>How can we help you?</h1>
+							<p>Have questions? Search through our Help Center</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /Breadcrumb -->
+			
+			<!-- Help Details -->
+			<div class="help-sec">
+				
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="help-title">
+								<h1>Most frequently asked questions</h1>
+                    <p>Here are the most frequently asked questions you may check before getting started</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-6">
+            
+                <!-- Faq -->							
+                <div class="faq-card">
+                    <h6 class="faq-title">
+                        <a class="collapsed" data-bs-toggle="collapse" href="#faqone" aria-expanded="false">Is there a 14-days trial?</a>
+                    </h6>
+                    <div id="faqone" class="collapse">
+                        <div class="faq-detail">
+                            <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.</p>
+                            <p>If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages. The new common language will be more simple and regular than the existing European languages.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                                            
+                <div class="faq-card">
+                    <h6 class="faq-title">
+                        <a class="collapsed" data-bs-toggle="collapse" href="#faqtwo" aria-expanded="false">How much time I will need to learn this app?</a>
+                    </h6>
+                    <div id="faqtwo" class="collapse">
+                        <div class="faq-detail">
+                            <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.</p>
+                            <p>If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages. The new common language will be more simple and regular than the existing European languages.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                                            
+                <div class="faq-card">
+                    <h6 class="faq-title">
+                        <a class="collapsed" data-bs-toggle="collapse" href="#faqthree" aria-expanded="false">Is there a month-to-month payment option?</a>
+                    </h6>
+                    <div id="faqthree" class="collapse">
+                        <div class="faq-detail">
+                            <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.</p>
+                            <p>If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages. The new common language will be more simple and regular than the existing European languages.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Faq -->
+            
+            </div>	
+            
+            <div class="col-lg-6">
+            
+                <!-- Faq -->							
+                <div class="faq-card">
+                    <h6 class="faq-title">
+                        <a class="collapsed" data-bs-toggle="collapse" href="#faqfour" aria-expanded="false">What’s the benefits of the Premium Membership?</a>
+                    </h6>
+                    <div id="faqfour" class="collapse">
+                        <div class="faq-detail">
+                            <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.</p>
+                            <p>If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages. The new common language will be more simple and regular than the existing European languages.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                                            
+                <div class="faq-card">
+                    <h6 class="faq-title">
+                        <a class="collapsed" data-bs-toggle="collapse" href="#faqfive" aria-expanded="false">Are there any free tutorials available?</a>
+                    </h6>
+                    <div id="faqfive" class="collapse">
+                        <div class="faq-detail">
+                            <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.</p>
+                            <p>If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages. The new common language will be more simple and regular than the existing European languages.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                                            
+                <div class="faq-card">
+                    <h6 class="faq-title">
+                        <a class="collapsed" data-bs-toggle="collapse" href="#faqsix" aria-expanded="false">How can I cancel my subscription plan?</a>
+                    </h6>
+                    <div id="faqsix" class="collapse">
+                        <div class="faq-detail">
+                            <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.</p>
+                            <p>If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages. The new common language will be more simple and regular than the existing European languages.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Faq -->
+            
+            </div>	
+        </div>
+    </div>
+</div>
+<!-- /Help Details -->
+
+<!-- Help Details -->
+<div class="support-sec">
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="help-title sup-title">
+                    <h1>Can't find what you're looking for?</h1>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-6">					
+                <div class="support-card">
+                    <div class="row">
+                        <div class="col-md-8">		
+                            <h3>Contact us</h3>
+                            <p>We can provide you with the support you need. Just contact us and our team will reply quick to you.</p>
+                            <a href="javascript:void(0);" class="btn btn-contact">Contact us</a>
+                        </div>
+                        <div class="col-md-4">	
+                            <div class="support-img">	
+                                <img src="assets/img/service-01.png" class="img-fluid" alt="Img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>	
+            <div class="col-lg-6">					
+                <div class="support-card">
+                    <div class="row">
+                        <div class="col-md-8">		
+                            <h3>Support</h3>
+                            <p>The good news is that you’re not alone, and you’re in the right place. Contact us for more detailed support.</p>
+                            <a href="javascript:void(0);" class="btn btn-ticket">Submit a Ticket</a>
+                        </div>
+                        <div class="col-md-4">	
+                            <div class="support-img">	
+                                <img src="assets/img/service-02.png" class="img-fluid" alt="Img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>	
+        </div>
+    </div>
+</div>
+<!-- /Help Details -->
+
+</div>
+<!-- /Main Wrapper -->
+
+<!-- jQuery -->
+<script src="assets/js/jquery-3.7.1.min.js"></script>
+
+<!-- Bootstrap Core JS -->
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS -->
+<script src="assets/js/script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+<% if (typeof storage !== 'undefined' && storage) { %>
+  <header class="navbar navbar-stuck navbar-expand-lg bg-light shadow-sm">
+      <div class="container">
+          <nav class="w-100">
+              <div class="d-flex align-items-center justify-content-between">
+                  <!-- Logo -->
+                  <a href="/" class="navbar-brand">
+                      <img src="assets/img/erudyte-logo.png" alt="Erudyte" style="height: 40px;">
+                  </a>
+                  
+                  <!-- Main Navigation -->
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a href="/home" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/people" class="nav-link">Friends</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/library" class="nav-link">My Learning</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/funding-opportunities" class="nav-link">Funding</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/events" class="nav-link">Webinars</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Account Settings</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/account-details" class="dropdown-item">Account Details</a></li>
+                            <li><a href="/account-security" class="dropdown-item">Security</a></li>
+                            <li><a href="/account-notifications" class="dropdown-item">Notifications</a></li>
+                            <li><a href="/messages" class="dropdown-item">Messages</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="/logout" method="POST" class="d-inline">
+                                    <button type="submit" class="dropdown-item">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <a href="/post" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex">
+                    <i class="bx fs-5 lh-1 me-1"></i>&nbsp;Create
+                </a>
+            </nav>
+        </div>
+    </header>
+    <% } else { %>
+      <!-- Fallback navbar -->
+      <header class="navbar navbar-stuck navbar-expand-lg bg-light shadow-sm">
+          <div class="container">
+              <nav class="w-100">
+                  <div class="d-flex align-items-center justify-content-between w-100">
+                      <a href="/" class="navbar-brand">
+                          <img src="assets/img/erudyte-logo.png" alt="Erudyte" style="height: 40px;">
+                      </a>
+                      <div>
+                          <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a href="/home" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/people" class="nav-link">Friends</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/library" class="nav-link">My Learning</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/funding-opportunities" class="nav-link">Funding</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/events" class="nav-link">Webinars</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Account Settings</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/account-details" class="dropdown-item">Account Details</a></li>
+                            <li><a href="/account-security" class="dropdown-item">Security</a></li>
+                            <li><a href="/account-notifications" class="dropdown-item">Notifications</a></li>
+                            <li><a href="/messages" class="dropdown-item">Messages</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="/logout" method="POST" class="d-inline">
+                                    <button type="submit" class="dropdown-item">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <a href="/post" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex">
+                    <i class="bx fs-5 lh-1 me-1"></i>&nbsp;Create
+                </a>
+                      </div>
+                  </div>
+              </nav>
+          </div>
+      </header>
+  <% } %>

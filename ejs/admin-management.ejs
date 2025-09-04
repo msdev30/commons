@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Erudyte Commons</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Erudyte Commons">
+    <meta name="keywords" content="teacher hub, educator network, STEM education, brand resources, workforce impact, inclusive education, language accessibility, neurodiverse learning, learning resources, online courses, conference landing, e-learning, teaching tools, teacher training, education platform">
+    <meta name="author" content="Erudtion Inc">
+
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon and Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon/site.webmanifest">
+    <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#6366f1">
+    <link rel="shortcut icon" href="assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#080032">
+    <meta name="msapplication-config" content="assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Vendor Styles -->
+    <link rel="stylesheet" media="screen" href="assets/vendor/boxicons/css/boxicons.min.css"/>
+
+    <!-- Main Theme Styles + Bootstrap -->
+    <link rel="stylesheet" media="screen" href="assets/css/theme.min.css">
+
+    <!-- Page loading styles -->
+    <style>
+      .page-loading {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all .4s .2s ease-in-out;
+        transition: all .4s .2s ease-in-out;
+        background-color: #fff;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 9999;
+      }
+      .dark-mode .page-loading {
+        background-color: #0b0f19;
+      }
+      .page-loading.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .page-loading-inner {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        -webkit-transition: opacity .2s ease-in-out;
+        transition: opacity .2s ease-in-out;
+        opacity: 0;
+      }
+      .page-loading.active > .page-loading-inner {
+        opacity: 1;
+      }
+      .page-loading-inner > span {
+        display: block;
+        font-size: 1rem;
+        font-weight: normal;
+        color: #9397ad;
+      }
+      .dark-mode .page-loading-inner > span {
+        color: #fff;
+        opacity: .6;
+      }
+      .page-spinner {
+        display: inline-block;
+        width: 2.75rem;
+        height: 2.75rem;
+        margin-bottom: .75rem;
+        vertical-align: text-bottom;
+        border: .15em solid #b4b7c9;
+        border-right-color: transparent;
+        border-radius: 50%;
+        -webkit-animation: spinner .75s linear infinite;
+        animation: spinner .75s linear infinite;
+      }
+      .dark-mode .page-spinner {
+        border-color: rgba(255,255,255,.4);
+        border-right-color: transparent;
+      }
+      @-webkit-keyframes spinner {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes spinner {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+<!-- custom css -->
+    <style>
+        .assign-newuser-section{
+            width:100%;
+            min-height:15rem;
+            padding:1rem;
+            border:1px solid  rgb(216 216 216);
+            border-radius: 0.5rem;
+        }
+        .user-management-section{
+            width:100%;
+            min-height: 30rem;
+            padding:1rem;
+            border: 1px solid rgb(216 216 216);
+            margin-top:2rem;
+            border-radius: 0.5rem;
+        }
+        .user-list-section p{
+            margin:0;
+            padding:0;
+        }
+        .user-list-section > div,.result-container > span > div{
+            display:grid;
+            grid-template-columns: repeat(3,1fr);
+            border-bottom:1px solid rgb(230, 229, 229);
+            justify-content: center;
+            padding:1rem 0;
+            transition: 0.5s ease;
+        }
+        .user-list-section > div i,.result-container > span > div i{
+            margin-right:0.5rem;
+        }
+        .user-list-section  div p:last-child, .result-container > span > div p:last-child{
+            align-content: center;
+            text-align: center;
+        }
+        .role-options input[type="checkbox"]{
+            display:none;
+        }
+        .dropdown-label{
+            margin: auto;
+            max-width: 9rem;
+            height: 2.1rem;
+            border: 1px solid #d5d7e5;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 1rem;
+            place-items: center;
+            position: relative;
+            cursor: pointer;
+            border-radius: 0.4rem;
+        }
+        .drop-down input[type="radio"]{
+            display:none;
+        }
+        .drop-down{
+            position:absolute;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
+            place-items: left;
+            text-align: left;
+            border: 1px solid #d5d7e5;
+            margin: auto;
+            overflow: hidden;
+            height:0;
+            opacity: 0;
+            top:100%;
+            border-radius: 0.4rem;
+            z-index: 20;
+        }
+        .drop-down label{
+          cursor: pointer;
+          padding: 0.3rem 0.5rem;
+          background:white;
+        }
+        .drop-down label:hover{
+          background:rgba(236, 235, 235, 0.88);
+        }
+        .role-options input[type="checkbox"]+ label i,.drop-down{
+            transition:0.2s ease;
+        }
+        .role-options input[type="checkbox"]:checked + label i{
+            transform: rotate(180deg);
+            z-index: 1;
+        }
+        .role-options input[type="checkbox"]:checked + label .drop-down{
+            top:100%;
+            min-height: fit-content;
+            height:10rem;
+            opacity:1;
+            background-color: white;
+        }
+        .lighter-text{
+          color:rgb(157, 154, 154)
+        }
+        .drop-down input[type="radio"]:checked + label{
+          background:rgba(236, 232, 232, 0.905);
+        }
+        .search-wrapper{
+          width: 100%;
+          padding: 0.5rem;
+          display: grid;
+          grid-template-columns: 1fr auto;
+          gap: 0.5rem;
+          border: 1px solid #a5a7fe;
+          place-items: center;
+          border-radius: 0.5rem;
+        }
+        #search-bar{
+          width: 100%;
+          height: 100%;
+          padding: 0.2rem;
+          border: none;
+        }
+        #search-bar:focus{
+          border:none;
+          outline:none;
+        }
+        #find-btn{
+          height: 2rem;
+          background: #ededed;
+          width: 2rem;
+          border-radius: 100%;
+          display: grid;
+          place-items: center;
+          cursor: pointer;
+          color: rgb(100 102 241);
+        }
+        #find-btn:active{
+          transform: scale(0.9);
+        }
+        .result-container{
+          width: 100%;
+          min-height: 5rem;
+          margin-top: 1rem;
+        }
+        .card-top{
+          border: 1px solid #aeaaaa !important;
+          border-radius: 1rem;
+          padding-left: 1rem !important;
+          align-items: center;
+        }
+        .card-top > p{
+          margin: 0;
+        }
+        @media only screen and (max-width: 860px) {
+          .user-list-section > div,.result-container > span > div{
+            font-size: 0.8rem;
+            transition: 0.3s ease;
+            grid-template-columns: 65% 35%;
+          }
+          .dropdown-label{
+            max-width: 7rem;
+          }
+          .user-list-section  div p:last-child,.result-container > span > div p:last-child{
+            align-content: center;
+            text-align: center;
+            grid-row: 1/3;
+            grid-column: 2/3;
+            place-self: center;
+            width: 10rem;
+        }
+      
+      }
+
+    </style>
+
+    <!-- Theme mode -->
+    <script>
+      let mode = window.localStorage.getItem('mode'),
+          root = document.getElementsByTagName('html')[0];
+      if (mode !== null && mode === 'dark') {
+        root.classList.add('dark-mode');
+      } else {
+        root.classList.remove('dark-mode');
+      }
+    </script>
+
+    <!-- Page loading scripts -->
+    <script>
+      (function () {
+        window.onload = function () {
+          const preloader = document.querySelector('.page-loading');
+          preloader.classList.remove('active');
+          setTimeout(function () {
+            preloader.remove();
+          }, 1000);
+        };
+      })();
+    </script>
+  </head>
+
+
+  <!-- Body -->
+  <body>
+
+    <!-- Page loading spinner -->
+    <div class="page-loading active">
+      <div class="page-loading-inner">
+        <div class="page-spinner"></div><span>Loading...</span>
+      </div>
+    </div>
+
+
+    <!-- Page wrapper for sticky footer -->
+    <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+    <main class="page-wrapper">
+
+
+            <!-- Navbar -->
+            <%- include('navbar') %>
+
+      <!-- Page content -->
+      <section class="container pt-5">
+        <div class="row">
+
+  
+          <!-- Sidebar (User info + Account menu) -->
+
+          <%-   include('account-sidebar') %> 
+
+          <!-- Account details -->
+          <div class="col-md-8 offset-lg-1 pb-5 mb-2 mb-lg-4 pt-md-5 mt-n3 mt-md-0">
+            <div class="ps-md-3 ps-lg-0 mt-md-2 py-md-4">
+                <h1 class="h2 pt-xl-1 pb-3">Management</h1>
+            <div class="admin-dash">
+                <div class="assign-newuser-section">
+                  <h4>Assign Role To New User</h4>
+                  <p class="lighter-text">Search and assign role to new users.</p>
+
+                  <div class="search-wrapper">
+                    <input type="email" id="search-bar" placeholder="Enter a User's Email...">
+                    <i  id="find-btn" class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                  <div class="result-container"></div>
+                </div>
+                
+                <div class="user-management-section">
+                    <h4 >Manage User Roles</h4>
+                    <p class="lighter-text">Find and manage all higher role users.</p>
+                    <div class="user-list-section">
+                        <div class="list-key">
+                            <p class="account">User</p>
+                            <p class="Email-address">Email Address</p>
+                            <p>Role</p>
+                        </div>
+
+                      <% users.forEach((user,index) => { %>
+                          <div class="user-card">
+                            <p><i class="fa-regular fa-user"></i> <%= user.name %></p>
+                            <p><i class="fa-regular fa-envelope"></i> <%= user.email %> </p>
+                            <p class="role-options">
+                                <input type="checkbox" id="dropdown<%=index%>">
+                                <label  class="dropdown-label" for="dropdown<%=index%>" tabindex="1" onblur="hideDropdown(this)">
+                                  <span class="dropdown-value"><%= user.role %> </span>
+                                  <% if(currentUser !== user.uid) {%> 
+                                    <i class="fa-solid fa-caret-down"></i>
+                                      <span class="drop-down" data-uid="<%=user.uid%>">
+                                          <input <% if(user.role === 'Member'){ %> checked <% } %> type="radio" name="option" id="option1-<%=index%> " value="Member">
+                                          <label for="option1-<%=index%> ">Member</label>
+                                          <input <% if(user.role === 'Moderator'){ %> checked <% }%>  type="radio" name="option" id="option2-<%=index%> " value="Moderator">
+                                          <label for="option2-<%=index%> ">Moderator</label>
+                                          <input <% if(user.role === 'Author'){ %> checked <% } %>     type="radio" name="option" id="option3-<%=index%> " value="Author">
+                                          <label for="option3-<%=index%> ">Author</label>
+                                          <input <% if(user.role === 'Admin'){ %> checked <% } %>      type="radio" name="option" id="option4-<%=index%> " value="Admin">
+                                          <label for="option4-<%=index%> ">Admin</label>
+                                      </span>
+                                  <% } %> 
+                                </label>
+                              </p>
+                          </div>
+                      <% });%>
+                    </div>
+                </div>
+            </div>
+
+            
+    </main>
+
+    
+
+
+    <!-- Back to top button -->
+    <a href="#top" class="btn-scroll-top" data-scroll>
+      <span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span>
+      <i class="btn-scroll-top-icon bx bx-chevron-up"></i>
+    </a>
+
+
+    <!-- Vendor Scripts -->
+    <script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+    <script src="assets/vendor/cleave.js/dist/cleave.min.js"></script>
+
+    <!-- Main Theme Script -->
+    <script src="assets/js/theme.min.js"></script>
+    <script>
+      const dropdowns = document.querySelectorAll('.drop-down');
+      const searchBtn = document.querySelector('#find-btn');
+      const searchBar = document.querySelector('#search-bar')
+      const searchResultContainer = document.querySelector('.result-container')
+
+      const hideDropdown = (e)=>{
+        e.parentElement.parentElement.querySelector('input[type="checkbox"]').checked = false;
+      }
+      const handleChangeInDropdown = (e)=>{
+        e.parentElement.parentElement.querySelector('.dropdown-value').innerText = e.value;
+        hideDropdown(e.parentElement);
+      }
+      const changeUserRole = async(uid,role)=>{
+        return await fetch('/update-user-role',{
+          method:'PUT',
+          headers:{
+            'Content-Type': 'application/json'
+          },
+          body:JSON.stringify({uid:uid,role:role})
+        }).then(response=>{
+          return response.status
+        })
+      }
+      const handleRoleChangeFlow = async (uid,value,element)=>{
+        console.log('called flow')
+        let status = await changeUserRole(uid,value)
+        if(status === 200)
+          handleChangeInDropdown(element),this
+        else
+          alert('Error updating Role!')
+      }
+      // handle dropdown event
+      dropdowns.forEach(dropdown=>{
+        dropdown.querySelectorAll('input[type="radio"]').forEach(option=>{
+          option.addEventListener('click',async ()=>{
+            let uid = option.parentElement.getAttribute('data-uid')
+            handleRoleChangeFlow(uid,option.value,option)
+          })
+        })
+      })
+
+    // searching users feature
+
+      //build list for users found
+      const buildFoundUsersList = (data)=>{
+        data.forEach((user,index)=>{
+          let userCard = `<div class="user-card card-top">
+            <p><i class="fa-regular fa-user"></i>${ user.name }</p>
+            <p><i class="fa-regular fa-envelope"></i>${user.email} </p>
+            <p class="role-options">
+                <input type="checkbox" id="dropdown-top${index}">
+                <label  class="dropdown-label" for="dropdown-top${index}" tabindex="1" onblur="hideDropdown(this)">
+                  <span class="dropdown-value">${ user.role} </span>
+                    <i class="fa-solid fa-caret-down"></i>
+                      <span class="drop-down" data-uid="${user.uid}">
+                          <input onChange="handleRoleChangeFlow('${user.uid}','Member',this);" ${(user.role === 'Member')?'checked':''}     type="radio" name="option-top${index}" id="option1top-${index}" value="Member">
+                          <label for="option1-top${index}">Member</label>
+                          <input onChange="handleRoleChangeFlow('${user.uid}','Moderator',this)" ${ user.role === 'Moderator'?'checked':''}  type="radio" name="option-top${index}" id="option2top-${index}" value="Moderator">
+                          <label for="option2top-${index}">Moderator</label>
+                          <input onChange="handleRoleChangeFlow('${user.uid}','Author',this)"   ${(user.role === 'Author')?'checked':''}     type="radio" name="option-top${index}" id="option3-top${index}" value="Author">
+                          <label for="option3-top${index}">Author</label>
+                          <input onChange="handleRoleChangeFlow('${user.uid}','Admin',this)"    ${ user.role === 'Admin'?'checked':''}      type="radio" name="option-top${index}" id="option4-top${index}" value="Admin">
+                          <label for="option4-top${index}">Admin</label>
+                      </span>
+                </label>
+              </p>
+          </div>`
+          searchResultContainer.innerHTML = ''
+          let span = document.createElement('span')
+          span.innerHTML = userCard
+          searchResultContainer.appendChild(span);
+        })
+      }
+
+      //validating search value length
+      searchBar.addEventListener('keyup',()=>{
+        if(searchBar.value.length > 0)
+          searchBar.parentElement.style.border = '1px solid #26d726';
+        else
+        searchBar.parentElement.style.border = '1px solid #ff3030';
+      })
+
+      //search btn event
+      searchBtn.addEventListener('click',async()=>{
+        if(searchBar.value.length < 1) return 
+        // call to get users from server
+        fetch('/search-users',{
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json'
+          },
+          body:JSON.stringify({email:searchBar.value})
+        }).then((response) => {
+          return response.json();
+        }).then((data) => {
+          console.log(data.list)
+          if(data.list.length)
+            buildFoundUsersList(data.list)
+          else  
+            searchResultContainer.innerText = 'No Users Found!'
+        })
+        console.log('search for:',searchBar.value);
+      })
+
+    </script>
+  </body>
+</html>

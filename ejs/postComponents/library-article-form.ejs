@@ -1,0 +1,286 @@
+<form  class="library-form" action="<% if(library_data && library_data.type === "Article"){ %>/update-library-article<% } else { %>/library-article-post<% } %>"  method="post" >
+    <!-- main image upload -->
+    <div class="form-input-element">
+        <section class="form-element-type">Article Main Image  </section>
+        <section class="form-input-field">
+            <label class="file-upload-field" for="main-image-upload"><% if(library_data && library_data.data && library_data.type === "Article"){%><%= library_data.data.mainImage %> <% }else{ %> Img upload<% } %> </label>
+            <input type="file" class="image-upload" name="mainImage" id="main-image-upload" multiple accept="image/*" <% if(!library_data) {%> required <% } %> >
+        </section>
+    </div>
+    <!-- title upload -->
+    <div class="form-input-element">
+        <section class="form-element-type">Enter Article Title  </section>
+        <section class="form-input-field">
+            <input <% if(library_data && library_data.data && library_data.type === "Article"){%> value = "<%=library_data.data.title%>" readonly style="background:#f5f5f5;"<% } %>  name="title" type="text" placeholder="Enter Title..." required>
+        </section>
+    </div>
+    <div class="form-input-element">
+        <section class="form-element-type">Expected Read Time  </section>
+        <section class="form-input-field">
+            <input <% if(library_data && library_data.data && library_data.type === "Article"){%> value = "<%= library_data.data.time %> " <% } %>  name="time" type="text" placeholder="x min/hr..." required>
+        </section>
+    </div>
+    <!-- new input element append container -->
+    <div class="form-append-container">
+       
+    </div>
+    <!--  -->
+    <section class="form-btn-section">
+        <button type="button" class="create-form-element-btn"> <i class="fa-solid fa-plus"></i>     Add an Element</button>
+        <button type="submit" class="submit-article-form submit-btn"><span class="submit-progress"></span><i class="fa-solid fa-paper-plane z-idx10 "></i>  <span class="z-idx10"> Post Article</span></button>
+    </section>
+ 
+ 
+ </form>
+ 
+ 
+ <script type='text/javascript'>
+    let file_inputs = [...document.querySelectorAll('input[type="file"]')]
+    let all_drop_downs = [...document.querySelectorAll('.selected-type')]
+    let input_element_container = document.querySelector('.form-append-container')
+    add_element_btn = document.querySelector('.create-form-element-btn');
+    const form_submit = document.querySelector('.library-form')
+    let drop_down_list = [...document.querySelectorAll('.drop-down')]
+    let countOfNewElements = 0;
+ 
+ 
+    const updateFileNameUploaded = (file)=>{
+            let fileLabel = file.parentElement.querySelector('.file-upload-field')
+            fileLabel.innerText = 'File Name: ' + file.files[0].name
+    }
+    // update name of file uploaded in the upload label
+    file_inputs.forEach(file=>{
+        file.addEventListener('change',()=>{
+            updateFileNameUploaded(file)
+        })
+    })
+ 
+ 
+    //create new element
+    const addNewElement = (itemCountId,selected='')=>{
+        let newElement = document.createElement("div");
+        newElement.innerHTML = `<div class="form-input-element">
+            <section class="form-element-type" tabindex="${itemCountId}" onBlur="hideDropDown(this)">
+                <div class="selected-type"  onClick="handleDropDownClick(this)" ><span class="dropdown-value">Paragraph</span> <i class="fa-solid fa-caret-down"></i></div>
+                <div class="drop-down" >
+                    <input type="radio" onClick="updateDropDownValue(this)" data-id="${itemCountId}" name="item${itemCountId}" id="option${itemCountId}1"  value="h1"></input>              <label for="option${itemCountId}1">h1</label>
+                    <input type="radio" onClick="updateDropDownValue(this)" data-id="${itemCountId}" name="item${itemCountId}" id="option${itemCountId}2"  value="h2"></input>              <label for="option${itemCountId}2">h2</label>
+                    <input type="radio" onClick="updateDropDownValue(this)" data-id="${itemCountId}" name="item${itemCountId}" id="option${itemCountId}3"  value="h3"></input>              <label for="option${itemCountId}3">h3</label>
+                    <input type="radio" onClick="updateDropDownValue(this)" data-id="${itemCountId}" name="item${itemCountId}" id="option${itemCountId}4"  value="h4"></input>              <label for="option${itemCountId}4">h4</label>
+                    <input type="radio" onClick="updateDropDownValue(this)" data-id="${itemCountId}" name="item${itemCountId}" id="option${itemCountId}5"  value="h5"></input>              <label for="option${itemCountId}5">h5</label>
+                    <input type="radio" onClick="updateDropDownValue(this)" data-id="${itemCountId}" name="item${itemCountId}" id="option${itemCountId}6"  value="h6"></input>              <label for="option${itemCountId}6">h6</label>
+                    <input type="radio" onClick="updateDropDownValue(this)" data-id="${itemCountId}" name="item${itemCountId}" id="option${itemCountId}7" checked value="Paragraph"></input><label for="option${itemCountId}7">Paragraph</label>
+                    <input type="radio" onClick="updateDropDownValue(this)" data-id="${itemCountId}" name="item${itemCountId}" id="option${itemCountId}8"  value="space"></input>    <label for="option${itemCountId}8">Empty Space</label>
+                    <input type="radio" onClick="updateDropDownValue(this)" data-id="${itemCountId}" name="item${itemCountId}" id="option${itemCountId}9"  value="image"></input>           <label for="option${itemCountId}9">Image</label>
+                    <input type="radio" onClick="updateDropDownValue(this)" data-id="${itemCountId}" name="item${itemCountId}" id="option${itemCountId}10"  value="Video"></input>          <label for="option${itemCountId}10">Video</label>
+                    <input type="radio" onClick="updateDropDownValue(this)" data-id="${itemCountId}" name="item${itemCountId}" id="option${itemCountId}11" value="Embed-Video"> </input>    <label for="option${itemCountId}11">Embed Video</label>
+                    <input type="radio" onClick="updateDropDownValue(this)" data-id="${itemCountId}" name="item${itemCountId}" id="option${itemCountId}12" value="Audio"></input>           <label for="option${itemCountId}12">Audio</label>
+                    <label class="remove-element" onClick="removeElement(this)"> Remove Item </label>
+                </div>
+            </section>
+            <section class="form-input-field">
+                <textarea class="input-field" name="item${itemCountId}" type="text" placeholder="Enter Text Here..." required></textarea>
+            </section>
+        </div>`
+        return newElement
+       
+    }
+ 
+ 
+    const handleDropDownClick = (e)=>{
+        e.parentElement.querySelector('.drop-down').classList.toggle('active-drop-down')
+    }
+    function hideDropDown(e){
+        e.querySelector('.drop-down').classList.remove('active-drop-down')
+    }
+    const removeElement = (e)=>{
+        e.parentElement.parentElement.parentElement.remove()
+    }
+    const createInputForDropDown = (type,id,value='')=>{
+        switch(type){
+            case 'Paragraph':
+                        return `<textarea class="input-field" name="item${id}" type="text" placeholder="Enter Text Here..." required>${value?value:''}</textarea>`
+            break;
+            case 'image':
+                    return `<div>   <label class="file-upload-field" for="item${id}">  ${value?value:"Img upload"}</label>
+                        <input  class="image-upload" data-src="${value}" onChange="updateFileNameUploaded(this)" type="file" name="item${id}" id="item${id}" multiple accept="image/*" ${value===''?"required":''}>
+                    </div>`
+            break;
+            case 'Video':
+                    return `<div>   <label class="file-upload-field" for="item${id}">  ${value?value=value:"Video upload"} </label>
+                        <input data-src="${value}" class="video-upload" onChange="updateFileNameUploaded(this)" type="file" name="item${id}" id="item${id}" multiple accept="video/*" ${value===''?"required":''}>
+                    </div>`
+            break;
+            case 'Embed-Video':
+                    return `<input name="item${id}" type="url"  value="${value?value:''}"   placeholder="Enter Video URL..." required>`
+            break;
+            case 'Audio':
+                return `<div>   <label class="file-upload-field" for="item${id}">${value?value=value:"Audio upload"}</label>
+                    <input class="audio-upload" data-src="${value}" onChange="updateFileNameUploaded(this)" type="file" name="item${id}" id="item${id}" multiple accept="audio/*" ${value===''?"required":''}>
+                </div>`
+            case 'space':
+            return `<div class="range-wrapper">
+                        <div class="space-wrapper"><p>Text on top</p><span class="space-indicator" style="height:${value?value:1.6}rem">Empty Space</span> <p>Text on the bottom</p></div>
+                        <input class="range" onInput="updateRangeValue(this)" type="range" name="item${id}" id="item${id}" min="0" max="10" step="0.2" value=${value?value=value:'1.6'} required}>
+                        <label class="range-value" for="item${id}">${value?value=value:'1.6'}</label>
+                    </div>`
+            break;
+            default:
+                return `<input name="item${id}" type="text" value="${value?value:""}"  placeholder="Enter Text..." required>`
+        }
+    }
+    const updateDropDownValue = (e,value='')=>{
+        let parent  = e.parentElement.parentElement;
+        parent.querySelector('.dropdown-value').innerText = e.value
+        let id  = e.getAttribute('data-id')
+        let input = createInputForDropDown(e.value,id,value)
+        parent.parentElement.querySelector('.form-input-field').innerHTML = input;
+        // hide dropdown
+        e.parentElement.parentElement.querySelector('.drop-down').classList.remove('active-drop-down')
+    }
+    const createInputs = (element,type,value,id)=>{
+        element.querySelector('.form-input-field').innerHTML = createInputForDropDown(type,id);
+    }
+    //range onChange event
+    function updateRangeValue(element){
+        element.parentElement.querySelector('.range-value').innerText = element.value;
+        element.parentElement.querySelector('.space-indicator').style.height = `${element.value}rem`
+    }
+ 
+ 
+    // adding click event to add element button
+    add_element_btn.addEventListener('click',()=>{
+        input_element_container.appendChild(addNewElement(countOfNewElements))
+        countOfNewElements++;
+    })
+ 
+ 
+    // send media to be saved in server
+    function uploadImages(imageUpload){
+        fetch('/upload-images', {
+            method: 'PUT',
+            body:imageUpload
+        })
+    }
+    function uploadAudio(audioUpload){
+        fetch('/upload-audio', {
+            method: 'PUT',
+            body:audioUpload
+        })
+    }
+    async function uploadVideo(videoUpload){
+        await fetch('/upload-video', {
+            method: 'PUT',
+            body:videoUpload
+        })
+    }
+   
+    async function handleFormMediaUploads(form,submit_btn_progress){
+        const imageInputs = [...form.querySelectorAll('.image-upload')]
+        const audioInputs = [...form.querySelectorAll('.audio-upload')]
+        const videoInputs = [...form.querySelectorAll('.video-upload')]
+ 
+ 
+        const imageUpload = new FormData();
+        imageInputs.forEach(file=>imageUpload.append('image',file.files[0]))
+ 
+ 
+        const audioUpload = new FormData();
+        audioInputs.forEach(file=>audioUpload.append('audio',file.files[0]))
+ 
+ 
+        const videoUpload = new FormData();
+        videoInputs.forEach(file=>videoUpload.append('video',file.files[0]))
+        // upload all images in form
+        if(imageInputs.length){
+            await uploadImages(imageUpload)
+        }
+        submit_btn_progress.width = '35%';
+        // upload all audio in form
+        if(audioInputs.length)
+            await uploadAudio(audioUpload)
+       
+        submit_btn_progress.width = '65%';
+        if(videoInputs.length)
+            await uploadVideo(videoUpload)
+ 
+ 
+        submit_btn_progress.width = '100%';
+        return
+    }
+ 
+ 
+    function formatArticleDataForSubmission(form){
+        let formData = {content:[]}
+        try{
+            formData.title = form.querySelector('[name="title"]').value
+            formData.time = form.querySelector('[name="time"]').value
+            formData.mainImage = form.querySelector('#main-image-upload').files[0].name
+        }catch(e){ }
+        //get all element data and types
+        form.querySelectorAll('.form-append-container .form-input-element').forEach((element,itemNum)=>{
+            //get value of data
+            let data = ''
+            let type = element.querySelector('input[type="radio"]:checked').value
+            if(type === 'Paragraph')
+                    data = element.querySelector('.form-input-field .input-field').value
+            else if (type === 'image' || type === 'Audio' || type === 'Video')
+                    data = (element.querySelector('.form-input-field input[type="file"]').files[0])?element.querySelector('.form-input-field input[type="file"]').files[0].name:element.querySelector('.form-input-field input[type="file"]').getAttribute('data-src')
+            else   
+                data = element.querySelector('.form-input-field input').value
+ 
+ 
+                // push data to content array
+                formData.content.push({
+                        order:itemNum+1,
+                        type:type,
+                        data:data
+                })
+        })
+        return formData
+    }
+ 
+ 
+    let articlePostUrl  = form_submit.action
+    // handle form submission
+    form_submit.addEventListener('submit',async (e)=>{
+        console.log('clicked submit')
+        e.preventDefault();
+        let submit_btn_progress = form_submit.querySelector('.submit-progress')
+        await handleFormMediaUploads(form_submit,submit_btn_progress)
+ 
+ 
+        // submit form data
+        fetch(articlePostUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify( formatArticleDataForSubmission(form_submit)),
+        }).then( (result) => (result.status == 200)?window.location.href = "/library":alert('Error submitting Form'))
+       
+        //form_submit.submit()
+    })
+ 
+ 
+    // used to fill in data for editing post
+    //following lines may show error due to code editor, ignore error
+     if(library_data && library_data.type === "Article"){ 
+        const form_content_data = - JSON.stringify(library_data.data.content) 
+        if(form_content_data){
+            form_content_data.forEach((item,index)=>{
+                let newElement = addNewElement(countOfNewElements,item.type);
+                let appendedElement = input_element_container.appendChild(newElement)
+                appendedElement.querySelectorAll(".drop-down input[type='radio']").forEach(radio=>{
+                    if(radio.value === item.type){
+                        radio.checked = true
+                        updateDropDownValue(radio,item.data)
+                    }
+                    else
+                        radio.checked = false
+                })
+                countOfNewElements++;
+            })
+        }
+    }
+ </script>

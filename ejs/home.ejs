@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8" />
+ <title>Erudyte Commons | Home</title>
+
+ <!-- SEO Meta Tags -->
+ <meta name="description" content="Erudyte" />
+ <meta name="keywords" content="teacher hub, educator network, STEM education, brand resources, workforce impact, inclusive education, language accessibility, neurodiverse learning, learning resources, online courses, conference landing, e-learning, teaching tools, teacher training, education platform">
+ <meta name="author" content="Erudtion Inc">
+
+
+ <!-- Viewport -->
+ <meta
+   name="viewport"
+   content="width=device-width, initial-scale=1, maximum-scale=1"
+ />
+
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+ <!-- Favicon and Touch Icons -->
+ <link
+   rel="apple-touch-icon"
+   sizes="180x180"
+   href="assets/favicon/apple-touch-icon.png"
+ />
+ <link
+   rel="icon"
+   type="image/png"
+   sizes="32x32"
+   href="assets/favicon/favicon-32x32.png"
+ />
+ <link
+   rel="icon"
+   type="image/png"
+   sizes="16x16"
+   href="assets/favicon/favicon-16x16.png"
+ />
+ <link rel="manifest" href="assets/favicon/site.webmanifest" />
+ <link
+   rel="mask-icon"
+   href="assets/favicon/safari-pinned-tab.svg"
+   color="#6366f1"
+ />
+ <link rel="shortcut icon" href="assets/favicon/favicon.ico" />
+ <meta name="msapplication-TileColor" content="#080032" />
+ <meta name="msapplication-config" content="assets/favicon/browserconfig.xml" />
+ <meta name="theme-color" content="#ffffff" />
+
+
+ <!-- Vendor Styles -->
+ <link
+   rel="stylesheet"
+   media="screen"
+   href="assets/vendor/boxicons/css/boxicons.min.css"
+ />
+ <link
+   rel="stylesheet"
+   media="screen"
+   href="assets/vendor/swiper/swiper-bundle.min.css"
+ />
+ <link
+   rel="stylesheet"
+   media="screen"
+   href="assets/vendor/lightgallery/css/lightgallery-bundle.min.css"
+ />
+
+
+ <!-- Main Theme Styles + Bootstrap -->
+ <link rel="stylesheet" media="screen" href="assets/css/theme.css" />
+
+
+ <!-- Page loading styles -->
+ <style>
+   .page-loading {
+     position: fixed;
+     inset: 0;
+     width: 100%;
+     height: 100%;
+     transition: all 0.4s 0.2s ease-in-out;
+     background-color: #fff;
+     opacity: 0;
+     visibility: hidden;
+     z-index: 9999;
+   }
+   .dark-mode .page-loading {
+     background-color: #0b0f19;
+   }
+   .page-loading.active {
+     opacity: 1;
+     visibility: visible;
+   }
+   .page-loading-inner {
+     position: absolute;
+     top: 50%;
+     left: 0;
+     width: 100%;
+     text-align: center;
+     transform: translateY(-50%);
+     transition: opacity 0.2s ease-in-out;
+     opacity: 0;
+   }
+   .page-loading.active > .page-loading-inner {
+     opacity: 1;
+   }
+   .page-loading-inner > span {
+     display: block;
+     font-size: 1rem;
+     color: #9397ad;
+   }
+   .dark-mode .page-loading-inner > span {
+     color: #fff;
+     opacity: 0.6;
+   }
+   .page-spinner {
+     display: inline-block;
+     width: 2.75rem;
+     height: 2.75rem;
+     margin-bottom: 0.75rem;
+     vertical-align: text-bottom;
+     border: 0.15em solid #b4b7c9;
+     border-right-color: transparent;
+     border-radius: 50%;
+     animation: spinner 0.75s linear infinite;
+   }
+   .dark-mode .page-spinner {
+     border-color: rgba(255, 255, 255, 0.4);
+     border-right-color: transparent;
+   }
+   @keyframes spinner {
+     100% {
+       transform: rotate(360deg);
+     }
+   }
+ </style>
+
+
+
+
+ <!-- Theme mode -->
+ <script>
+   let mode = window.localStorage.getItem("mode"),
+     root = document.getElementsByTagName("html")[0];
+   if (mode !== null && mode === "dark") {
+     root.classList.add("dark-mode");
+   } else {
+     root.classList.remove("dark-mode");
+   }
+ </script>
+
+ <!-- Page loading scripts -->
+ <script>
+   (function () {
+     window.onload = function () {
+       const preloader = document.querySelector(".page-loading");
+       preloader.classList.remove("active");
+       setTimeout(function () {
+         preloader.remove();
+       }, 1000);
+     };
+   })();
+ </script>
+</head>
+
+
+<body>
+ <!-- Page loading spinner -->
+ <div class="page-loading active">
+   <div class="page-loading-inner">
+     <div class="page-spinner"></div>
+     <span>Loading...</span>
+   </div>
+ </div>
+
+<!-- Include jQuery first -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include Popper.js next -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
+<!-- Include Bootstrap JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+ <!-- Page wrapper (for sticky footer if needed) -->
+ <main class="page-wrapper">
+   <!-- Navbar (EJS partial or replace with your own navbar HTML) -->
+   <%- include('navbar') %>
+
+     <div
+       class="position-fixed top-0 start-0 w-100 bg-position-center bg-size-cover bg-repeat-0"
+       style="background-image: url('assets/img/about/hero-bg.svg')"
+     >
+       <div class="d-lg-none" style="height: 960px"></div>
+       <div class="d-none d-lg-block" style="height: 768px"></div>
+     </div>
+
+     <div style="height: 40px; width: 100%;"></div>
+     <!-- Main Content Container -->
+     <div class="container py-5">
+       <!-- Search Section -->
+       <div class="text-center mb-5">
+         <img
+           src="assets/img/erudyte-logo.png"
+           alt="Erudyte Commons Logo"
+           class="mx-auto mb-4"
+           style="max-width: 300px"
+         />
+         <div class="d-flex mx-auto" style="max-width: 600px">
+          <select class="form-select" id="" name="type" required style="max-width: 160px;">
+            <option value="funding">Funding</option>
+            <option value="blogs">Blogs</option>
+            <option value="certificates">Certificates</option>
+            <option value="ebooks">Ebooks</option>
+            <option value="kits">Kits</option>
+            <option value="videos">Videos</option>
+            <option value="webinars">Webinars</option>
+          </select>
+          <div class="position-relative flex-grow-1">
+            <input type="text" placeholder="Search" class="form-control rounded-end" />
+            <button class="position-absolute top-50 end-0 translate-middle-y border-0 bg-transparent pe-3">
+              <i class="bx bx-search text-muted"></i>
+            </button>
+          </div>
+        </div>
+
+       <div style="height: 80px; width: 100%;"></div>
+       <!-- Dashboard Grid -->
+       <div class="row g-4">
+         <!-- Recommended Section -->
+         <div class="col-12 mb-4">
+           <div
+             class="d-flex justify-content-between align-items-left mb-4"
+           >
+             <h2 class="h4 mb-0">Recommended for you</h2>
+             <p class="text-muted small mb-0">
+               Personalize this section by telling us your field of interest
+               <a href="#" class="text-primary text-decoration-none"
+                 >Add interest</a
+               >
+             </p>
+           </div>
+
+
+           <div class="row g-4">
+             <!-- Course Cards -->
+             <div class="col-md-4">
+              <article class="card border-0 shadow-sm">
+                <div class="position-relative">
+                  <a href="portfolio-single-course.html" class="d-block position-absolute w-100 h-100 top-0 start-0"></a>
+                  <span class="badge bg-secondary position-absolute top-0 start-0 zindex-2 mt-3 ms-3">PDF download</span>
+                  <a href="#" class="btn btn-icon btn-light bg-white border-white btn-sm rounded-circle position-absolute top-0 end-0 zindex-2 me-3 mt-3" data-bs-toggle="tooltip" data-bs-placement="left" title="Remove">
+                    <i class="bx bxs-bookmark"></i>
+                  </a>
+                  <img src="assets/img/5 EdTech Trends that will Shape 2025.png" class="card-img-top" alt="Image">
+                </div>
+                <div class="card-body pb-3">
+                  <h3 class="h5 mb-2 text-truncate">
+                    <a href="portfolio-single-course.html">6th Grade Math Lesson Walkthroug</a>
+                  </h3>
+                  <p class="fs-sm mb-2" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Download our comprehensive workbook with lesson walkthroughs, activities, and teacher-friendly guides</p>
+                </div>
+              </article>
+            </div>
+
+
+             <div class="col-md-4">
+               <div class="card border-0 shadow-sm">
+                 <img
+                   src="assets/img/5 EdTech Trends that will Shape 2025.png"
+                   class="card-img-top"
+                   alt="Erudyte’s 5 EdTech Trends that will Shape 2025"
+                 />
+                 <div class="card-body">
+                   <div
+                     class="d-flex align-items-left gap-2 text-muted small mb-2"
+                   >
+                     <i class="bx bx-play-circle"></i>
+                     <span>Article</span>
+                   </div>
+                   <h3 class="h5">5 EdTech Trends that will Shape 2025</h3>
+                   <p class="text-muted small mb-0">
+                     Discover five EdTech trends we predict will shape 2025, from AI personalization to advanced adaptive assessment technologies..
+                   </p>
+                 </div>
+               </div>
+             </div>
+
+
+             <div class="col-md-4">
+               <div class="card border-0 shadow-sm">
+                 <img
+                   src="assets/img/Erudyte collaborative guide.png"
+                   class="card-img-top"
+                   alt="Erudyte Collaborative Lesson Design for Multilingual Learners in STEM Classes"
+                 />
+                 <div class="card-body">
+                   <div
+                     class="d-flex align-items-right gap-2 text-muted small mb-2"
+                   >
+                     <i class="bx bx-play-circle"></i>
+                     <span>Webinar</span>
+                   </div>
+                   <h3 class="h5">Collaborative Lesson Design</h3>
+                   <p class="text-muted small mb-0">
+                     Empower multilingual learners in STEM with collaborative lesson design strategies that integrate cultural responsiveness, social-emotional learning, and academic success tools
+                   </p>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+
+
+       <!-- Daily Digest + Events Row -->
+       <div class="row g-4">
+         <!-- Daily Digest -->
+         <div class="col-lg-8">
+           <div class="card border-0 shadow-sm">
+             <div class="card-body p-4">
+               <div
+                 class="d-flex justify-content-between align-items-center mb-4"
+               >
+                 <h5 class="card-title mb-0">Your Daily Digest</h5>
+                 <div class="d-flex gap-2">
+                   <button
+                     type="button"
+                     id="testimonials-prev"
+                     class="btn btn-prev btn-icon btn-sm me-2"
+                   >
+                     <i class="bx bx-chevron-left"></i>
+                   </button>
+                   <button
+                     id="testimonials-next"
+                     class="btn btn-icon btn-sm btn-light"
+                   >
+                     <i class="bx bx-chevron-right"></i>
+                   </button>
+                 </div>
+               </div>
+
+
+               <!-- Swiper -->
+               <div
+                 class="swiper testimonials-swiper"
+                 data-swiper-options='{
+                   "spaceBetween": 24,
+                   "loop": true,
+                   "pagination": {
+                     "el": ".swiper-pagination",
+                     "clickable": true
+                   },
+                   "navigation": {
+                     "prevEl": "#testimonials-prev",
+                     "nextEl": "#testimonials-next"
+                   }
+                 }'
+               >
+                 <div class="swiper-wrapper">
+                   <!-- Testimonial 1 -->
+                   <div class="swiper-slide">
+                     <figure
+                       class="card h-100 position-relative border-0 bg-transparent"
+                     >
+                       <blockquote class="card-body p-0 mb-0">
+                         <p class="fs-lg mb-0">
+                           Today, my students explored the periodic table through a hands-on simulation I learned about here. Seeing their excitement was the highlight of my week!
+                         </p>
+                       </blockquote>
+                       <figcaption
+                         class="d-flex align-items-center gap-3 mt-3"
+                       >
+                         <img
+                           src="assets/img/avatar/25.jpg"
+                           class="rounded-circle"
+                           width="60"
+                           alt="Mrs. Anderson"
+                         />
+                         <div>
+                           <h6 class="fw-semibold mb-1">Mrs. Anderson</h6>
+                           <span class="text-muted small"
+                             >7th Grade Science Teacher</span
+                           >
+                         </div>
+                       </figcaption>
+                     </figure>
+                   </div>
+
+
+                   <!-- Testimonial 2 -->
+                   <div class="swiper-slide h-auto">
+                     <figure
+                       class="card h-100 position-relative border-0 bg-transparent"
+                     >
+                       <blockquote class="card-body p-0 mb-0">
+                         <p class="fs-lg mb-0">
+                           Proud to see my students collaborating more effectively in group projects after integrating SEL-focused activities. Thanks for the resources!
+                           <br />
+                         </p>
+                       </blockquote>
+                       <figcaption
+                         class="card-footer border-0 d-flex align-items-center w-100 pb-2"
+                       >
+                         <img
+                           src="assets/img/avatar/33.jpg"
+                           width="60"
+                           class="rounded-circle"
+                           alt="Ralph Edwards"
+                         />
+                         <div class="ps-3">
+                           <h6 class="fw-semibold lh-base mb-0">
+                             Ms. Nguyen
+                           </h6>
+                           <span class="fs-sm text-muted"
+                             >Special Education Teacher.</span
+                           >
+                         </div>
+                       </figcaption>
+                     </figure>
+                   </div>
+
+
+                   <!-- Testimonial 3 -->
+                   <div class="swiper-slide h-auto">
+                     <figure
+                       class="card h-100 position-relative border-0 bg-transparent"
+                     >
+                       <blockquote class="card-body p-0 mb-0">
+                         <p class="fs-lg mb-0">
+                           Just wrapped up a collaborative lesson planning session with fellow teachers. We designed a STEM project incorporating SEL principles for multilingual learners. Can't wait to see the students' reactions.
+                         </p>
+                       </blockquote>
+                       <figcaption
+                         class="card-footer border-0 d-flex align-items-center w-100 pb-2"
+                       >
+                         <img
+                           src="assets/img/avatar/41.jpg"
+                           width="60"
+                           class="rounded-circle"
+                           alt="Darrell Harris"
+                         />
+                         <div class="ps-3">
+                           <h6 class="fw-semibold lh-base mb-0">
+                             Mr. Harris
+                           </h6>
+                           <span class="fs-sm text-muted"
+                             >Instructional Coach</span
+                           >
+                         </div>
+                       </figcaption>
+                     </figure>
+                   </div>
+                 </div>
+                 <!-- Swiper Pagination -->
+                 <div class="swiper-pagination mt-4"></div>
+               </div>
+             </div>
+           </div>
+         </div>
+
+
+         <!-- Events Section -->
+         <div class="col-lg-4">
+           <div class="card border-0 shadow-sm h-100">
+             <div class="card-body">
+               <h5 class="card-title mb-4">Events</h5>
+               <ul class="list-unstyled mb-0">
+                 <li class="border-bottom pb-3 mb-3">
+                   <h6 class="mb-2">
+                     <a href="#" class="text-decoration-none"
+                       >Meeting @3:00pm w/ Gloria H.</a
+                     >
+                   </h6>
+                   <div class="d-flex align-items-center text-muted small">
+                     <span class="border-end pe-3 me-3">Today</span>
+                     <i class="bx bx-share-alt me-1"></i>
+                   </div>
+                 </li>
+                 <li class="border-bottom pb-3 mb-3">
+                   <h6 class="mb-2">
+                     <a href="#" class="text-decoration-none"
+                       >Meeting @10:00am w/ My Group</a
+                     >
+                   </h6>
+                   <div class="d-flex align-items-center text-muted small">
+                     <span class="border-end pe-3 me-3">Jul. 19, 2022</span>
+                     <i class="bx bx-share-alt me-1"></i>
+                   </div>
+                 </li>
+                 <li>
+                   <h6 class="mb-2">
+                     <a href="#" class="text-decoration-none"
+                       >Meeting @3:00pm w/ Scott M.</a
+                     >
+                   </h6>
+                   <div class="d-flex align-items-center text-muted small">
+                     <span class="border-end pe-3 me-3">Jul. 23, 2022</span>
+                     <i class="bx bx-share-alt me-1"></i>
+                   </div>
+                 </li>
+               </ul>
+             </div>
+           </div>
+         </div>
+       </div>
+
+
+       <div style="height: 100px; width: 100%;"></div>
+
+       <!-- Popular Academy Certificates -->
+       <div class="col-12 mb-4 mt-5">
+         <div class="mb-4">
+           <h2 class="h4 mb-2">Popular Erudyte Certificates</h2>
+           <p class="text-muted small">
+             Advance your career by completing one or more of our nationally
+             recognized certifications.
+           </p>
+         </div>
+
+
+         <div class="d-flex flex-wrap gap-2 mb-4">
+           <button class="btn btn-outline-secondary rounded-pill">
+             Leadership and Professional Growth
+           </button>
+           <button class="btn btn-outline-secondary rounded-pill">
+             Curriculum Design and Development
+           </button>
+           <button class="btn btn-outline-secondary rounded-pill">
+             Educational Technology Integration
+           </button>
+           <button class="btn btn-outline-secondary rounded-pill">
+             Social and Emotional Learning (SEL)
+           </button>
+         </div>
+
+
+         <div class="row g-4">
+           <!-- Main Feature -->
+           <div class="col-md-6">
+             <div class="card border-0 shadow-sm h-100">
+               <img
+                 src="assets/img/blog/03.jpg"
+                 class="card-img-top"
+                 alt="Marketing Trends"
+               />
+               <div class="card-body">
+                 <h3 class="h5">
+                   5 Edtech Trends that will shape 2025
+                 </h3>
+                 <p class="card-text text-muted small">
+                   Data from 1400+ Global Marketers
+                 </p>
+                 <p class="card-text text-muted small">
+                   Discover the educational technology trends, winning
+                   opportunities and challenges brands face in...
+                 </p>
+                 <div
+                   class="d-flex justify-content-between align-items-center text-muted small"
+                 >
+                   <span>Maxwell Iskiev</span>
+                   <span>6/26/24</span>
+                 </div>
+               </div>
+             </div>
+           </div>
+
+
+           <!-- Featured Posts -->
+           <div class="col-md-6">
+             <div class="d-flex flex-column gap-3">
+               <div class="card border-0 shadow-sm">
+                 <div class="card-body">
+                   <h3 class="h6 mb-2">
+                    Why STEM is Critical for Future Careers
+                   </h3>
+                   <div
+                     class="d-flex justify-content-between text-muted small"
+                   >
+                     <span>Tristen Taylor</span>
+                     <span>7/23/24</span>
+                   </div>
+                 </div>
+               </div>
+
+
+               <div class="card border-0 shadow-sm">
+                 <div class="card-body">
+                   <h3 class="h6 mb-2">
+                     10 Ways to Enhance Student Engagement in STEM Classes
+                   </h3>
+                   <div
+                     class="d-flex justify-content-between text-muted small"
+                   >
+                     <span>Jay Fuchs</span>
+                     <span>9/25/24</span>
+                   </div>
+                 </div>
+               </div>
+
+
+               <div class="card border-0 shadow-sm">
+                 <div class="card-body">
+                   <h3 class="h6 mb-2">
+                     Warm Welcome: Creating Inclusive Spaces for Newcomer English Learners
+                   </h3>
+                   <div
+                     class="d-flex justify-content-between text-muted small"
+                   >
+                     <span>Rebecca Riserbato</span>
+                     <span>7/23/24</span>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+
+       <div style="height: 130px; width: 100%;"></div>
+       <!-- Video Library -->
+       <div class="col-12 mb-4">
+         <h2 class="h2 mb-4">From Erudyte's Video Library</h2>
+         <div class="position-relative">
+           <!-- Swiper Container -->
+           <div class="swiper video-swiper">
+             <div class="swiper-wrapper">
+               <!-- Slide 1 -->
+               <div class="swiper-slide" style="width: 300px">
+                 <div class="card border-0 shadow-sm">
+                   <img
+                     src="assets/img/2025/How to Create and Assign Quick Assessments with Erudyte.png"
+                     class="card-img-top"
+                     alt="Erudyte How Tos"
+                   />
+                   <div class="card-body">
+                     <h3 class="h6 mb-2">
+                       How to Create and Assign Quick Assessments on Erudyte.
+                     </h3>
+                     <div
+                       class="d-flex justify-content-between align-items-center text-muted small"
+                     >
+                       <span>3 min watch</span>
+                       <span>1/16/24</span>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+
+
+               <!-- Slide 2 -->
+               <div class="swiper-slide" style="width: 300px">
+                 <div class="card border-0 shadow-sm">
+                   <img
+                     src="assets/img/Culturally Relevancy SEL Practices.png"
+                     class="card-img-top"
+                     alt="Culturally Relevant and SEL Practices"
+                   />
+                   <div class="card-body">
+                     <h3 class="h6 mb-2">
+                       Culturally Relevant and SEL Practices for Your Diverse Classroom
+                     </h3>
+                     <div
+                       class="d-flex justify-content-between align-items-center text-muted small"
+                     >
+                       <span>6 min watch</span>
+                       <span>1/12/24</span>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+
+
+               <!-- Slide 3 -->
+               <div class="swiper-slide" style="width: 300px">
+                 <div class="card border-0 shadow-sm">
+                   <img
+                     src="assets/img/2025/collaborative Teaching Strategies- A World of Difference in Diverse Classrooms.png"
+                     class="card-img-top"
+                     alt="Collaborative Teaching Strategies"
+                   />
+                   <div class="card-body">
+                     <h3 class="h6 mb-2">
+                       Collaborative Teaching Strategies: A World of Difference in Diverse Classrooms
+                     </h3>
+                     <div
+                       class="d-flex justify-content-between align-items-center text-muted small"
+                     >
+                       <span>4 min watch</span>
+                       <span>1/10/24</span>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+
+
+             <!-- Navigation Buttons -->
+             <button
+               class="video-swiper-prev btn btn-icon btn-sm btn-light position-absolute top-50 start-0 translate-middle-y z-2"
+             >
+               <i class="bx bx-chevron-left"></i>
+             </button>
+             <button
+               class="video-swiper-next btn btn-icon btn-sm btn-light position-absolute top-50 end-0 translate-middle-y z-2"
+             >
+               <i class="bx bx-chevron-right"></i>
+             </button>
+
+
+             <!-- Pagination Dots -->
+             <div class="swiper-pagination text-center mt-3"></div>
+           </div>
+         </div>
+       </div>
+
+       <div style="height: 150px; width: 100%; background-color: transparent;"></div>
+
+<!-- Professional Development Section -->
+<div class="col-12">
+  <h2 class="h4 mb-4">Professional Development Courses</h2>
+  
+  <!-- Filters -->
+  <div class="d-flex flex-wrap gap-3 mb-4">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="certifications-only" />
+      <label class="form-check-label" for="certifications-only">
+        Certifications only
+      </label>
+    </div>
+    <select class="form-select form-select-sm" style="width: auto;">
+      <option>Level</option>
+    </select>
+    <select class="form-select form-select-sm" style="width: auto;">
+      <option>Duration</option>
+    </select>
+    <select class="form-select form-select-sm" style="width: auto;">
+      <option>Content type</option>
+    </select>
+    <select class="form-select form-select-sm" style="width: auto;">
+      <option>Language</option>
+    </select>
+  </div>
+
+  <!-- Course Grid -->
+  <div class="row g-4">
+    <!-- Course Card 1 -->
+    <div class="col-md-4 col-lg-3">
+      <div class="card border-0 shadow-sm h-100" style="overflow: hidden;">
+        <img src="assets/img/2025/Erudyte SEL for Educators.png" class="card-img-top" alt="Course Image" />
+        <div class="card-body d-flex flex-column" style="display: flex; flex-direction: column; height: 100%;">
+          <div class="text-muted small mb-2">12 min</div>
+          <h3 class="h6 mb-3" style="word-wrap: break-word; overflow: hidden;">SEL for Educators</h3>
+          <p class="card-text small text-muted mb-4" style="word-wrap: break-word; overflow: hidden; line-height: 1.5;">
+            Enhance your ability to support students' emotional well-being and foster a compassionate classroom community.
+          </p>
+          <div class="mt-auto">
+            <button class="btn btn-primary" style="text-align: center;">Start lesson</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Repeat for other cards -->
+    <div class="col-md-4 col-lg-3">
+      <div class="card border-0 shadow-sm h-100" style="overflow: hidden;">
+        <img src="assets/img/2025/Erudyte Differentiated Instruction Techniques.png" class="card-img-top" alt="Course Image" />
+        <div class="card-body d-flex flex-column" style="display: flex; flex-direction: column; height: 100%;">
+          <div class="text-muted small mb-2">18 min</div>
+          <h3 class="h6 mb-3" style="word-wrap: break-word; overflow: hidden;">Differentiated Instruction Techniques</h3>
+          <p class="card-text small text-muted mb-4" style="word-wrap: break-word; overflow: hidden; line-height: 1.5;">
+            Implement tailored teaching methods to address varying student abilities and learning styles.
+          </p>
+          <div class="mt-auto">
+            <button class="btn btn-primary" style="text-align: center;">Start lesson</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-lg-3">
+      <div class="card border-0 shadow-sm h-100" style="overflow: hidden;">
+        <img src="assets/img/2025/Erudyte Leadership Skills for Educators.png" class="card-img-top" alt="Course Image" />
+        <div class="card-body d-flex flex-column" style="display: flex; flex-direction: column; height: 100%;">
+          <div class="text-muted small mb-2">16 min</div>
+          <h3 class="h6 mb-3" style="word-wrap: break-word; overflow: hidden;">Leadership Skills for Educators</h3>
+          <p class="card-text small text-muted mb-4" style="word-wrap: break-word; overflow: hidden; line-height: 1.5;">
+            Build your capacity to lead initiatives, collaborate with colleagues, and drive positive change within your school.
+          </p>
+          <div class="mt-auto">
+            <button class="btn btn-primary" style="text-align: center;">Start lesson</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-lg-3">
+      <div class="card border-0 shadow-sm h-100" style="overflow: hidden;">
+        <img src="assets/img/2025/Erudyte Differentiated Instruction Techniques.png" class="card-img-top" alt="Course Image" />
+        <div class="card-body d-flex flex-column" style="display: flex; flex-direction: column; height: 100%;">
+          <div class="text-muted small mb-2">15 min</div>
+          <h3 class="h6 mb-3" style="word-wrap: break-word; overflow: hidden;">Data-Driven Instruction</h3>
+          <p class="card-text small text-muted mb-4" style="word-wrap: break-word; overflow: hidden; line-height: 1.5;">
+            Learn how to effectively use </br>assessment data to inform and </br>improve your teaching methods.
+          </p>
+          <div class="mt-auto">
+            <button class="btn btn-primary" style="text-align: center;">Start lesson</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="height: 250px; width: 100%; background-color: transparent;"></div>
+           <!-- Horizontal card: Image on the left -->
+           <!-- Add your content here if needed -->
+         </div>
+       </div>
+     </div>
+   </section>
+ </main>
+
+
+ <!-- Back to top button -->
+ <a href="#top" class="btn-scroll-top" data-scroll>
+   <span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span>
+   <i class="btn-scroll-top-icon bx bx-chevron-up"></i>
+ </a>
+
+
+ <!-- Vendor Scripts -->
+ <script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+ <script src="assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+ <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+ <script src="assets/vendor/lightgallery/lightgallery.min.js"></script>
+ <script src="assets/vendor/lightgallery/plugins/video/lg-video.min.js"></script>
+ <script src="assets/vendor/popup.js"></script>
+
+
+ <!-- Main Theme Script -->
+ <script src="assets/js/theme.min.js"></script>
+
+
+ <!-- Swiper Initialization -->
+ <script>
+   document.addEventListener('DOMContentLoaded', function() {
+     new Swiper('.video-swiper', {
+       slidesPerView: 'auto',       // Display as many slides as fit in the container
+       centeredSlides: true,        // Center the active slide
+       spaceBetween: 24,            // Space (in px) between slides
+       navigation: {
+         nextEl: '.video-swiper-next',
+         prevEl: '.video-swiper-prev',
+       },
+       pagination: {
+         el: '.swiper-pagination',
+         clickable: true,
+       },
+       breakpoints: {
+         // When window width is >= 640px
+         640:  { slidesPerView: 1 },
+         // When window width is >= 768px
+         768:  { slidesPerView: 2 },
+         // When window width is >= 1024px
+         1024: { slidesPerView: 3 },
+       },
+     });
+   });
+ </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<form action="/api/funding-opportunities" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="fundingTitle" class="form-label">Opportunity Title</label>
+      <input type="text" class="form-control" id="fundingTitle" name="title" required>
+    </div>
+    <div class="mb-3">
+      <label for="fundingOrganization" class="form-label">Funding Organization</label>
+      <input type="text" class="form-control" id="fundingOrganization" name="organization" required>
+    </div>
+    <div class="mb-3">
+      <label for="fundingDescription" class="form-label">Description</label>
+      <textarea class="form-control" id="fundingDescription" name="description" rows="4" required></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="fundingEligibility" class="form-label">Eligibility Criteria</label>
+      <textarea class="form-control" id="fundingEligibility" name="eligibility" rows="3" required></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="fundingAmount" class="form-label">Funding Amount</label>
+      <input type="text" class="form-control" id="fundingAmount" name="amount" required>
+    </div>
+    <div class="mb-3">
+      <label for="fundingDeadline" class="form-label">Application Deadline</label>
+      <input type="date" class="form-control" id="fundingDeadline" name="deadline" required>
+    </div>
+    <div class="mb-3">
+      <label for="fundingProcess" class="form-label">Application Process</label>
+      <textarea class="form-control" id="fundingProcess" name="applicationProcess" rows="3" required></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="fundingWebsite" class="form-label">Website URL</label>
+      <input type="url" class="form-control" id="fundingWebsite" name="website" required>
+    </div>
+    <div class="mb-3">
+      <label for="fundingCategory" class="form-label">Category</label>
+      <select class="form-select" id="fundingCategory" name="category" required>
+        <option value="">Select category</option>
+        <option value="research">Research Grant</option>
+        <option value="supplies">Classroom Materials</option>
+        <option value="scholarship">Scholarship</option>
+        <option value="project">Project Funding</option>
+        <option value="fellowship">Fellowship</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Funding Opportunity</button>
+  </form>

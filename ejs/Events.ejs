@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Erudyte Commons</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Erudyte Commons">
+    <meta name="keywords" content="teacher hub, educator network, STEM education, brand resources, workforce impact, inclusive education, language accessibility, neurodiverse learning, learning resources, online courses, conference landing, e-learning, teaching tools, teacher training, education platform">
+    <meta name="author" content="Erudtion Inc">
+  
+
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon and Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon/site.webmanifest">
+    <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#6366f1">
+    <link rel="shortcut icon" href="assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#080032">
+    <meta name="msapplication-config" content="assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Vendor Styles -->
+    <link rel="stylesheet" media="screen" href="assets/vendor/boxicons/css/boxicons.min.css"/>
+    <link rel="stylesheet" media="screen" href="assets/vendor/swiper/swiper-bundle-library.css"/>
+    <link rel="stylesheet" media="screen" href="assets/vendor/lightgallery/css/lightgallery-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Main Theme Styles + Bootstrap -->
+    <link rel="stylesheet" media="screen" href="assets/css/events-theme.css">
+
+    <!-- Page loading styles -->
+    <style>
+      .page-loading {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all .4s .2s ease-in-out;
+        transition: all .4s .2s ease-in-out;
+        background-color: #fff;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 9999;
+      }
+      .dark-mode .page-loading {
+        background-color: #0b0f19;
+      }
+      .page-loading.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .page-loading-inner {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        -webkit-transition: opacity .2s ease-in-out;
+        transition: opacity .2s ease-in-out;
+        opacity: 0;
+      }
+      .page-loading.active > .page-loading-inner {
+        opacity: 1;
+      }
+      .page-loading-inner > span {
+        display: block;
+        font-size: 1rem;
+        font-weight: normal;
+        color: #9397ad;
+      }
+      .dark-mode .page-loading-inner > span {
+        color: #fff;
+        opacity: .6;
+      }
+      .page-spinner {
+        display: inline-block;
+        width: 2.75rem;
+        height: 2.75rem;
+        margin-bottom: .75rem;
+        vertical-align: text-bottom;
+        border: .15em solid #b4b7c9;
+        border-right-color: transparent;
+        border-radius: 50%;
+        -webkit-animation: spinner .75s linear infinite;
+        animation: spinner .75s linear infinite;
+      }
+      .dark-mode .page-spinner {
+        border-color: rgba(255,255,255,.4);
+        border-right-color: transparent;
+      }
+      @-webkit-keyframes spinner {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes spinner {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+
+    <!-- Theme mode -->
+    <script>
+      let mode = window.localStorage.getItem('mode'),
+          root = document.getElementsByTagName('html')[0];
+      if (mode !== null && mode === 'dark') {
+        root.classList.add('dark-mode');
+      } else {
+        root.classList.remove('dark-mode');
+      }
+    </script>
+
+    <!-- Page loading scripts -->
+    <script>
+      (function () {
+        window.onload = function () {
+          const preloader = document.querySelector('.page-loading');
+          preloader.classList.remove('active');
+          setTimeout(function () {
+            preloader.remove();
+          }, 1000);
+        };
+      })();
+    </script>
+  </head>
+
+
+  <!-- Body -->
+  <body>
+
+    <!-- Page loading spinner -->
+    <div class="page-loading active">
+      <div class="page-loading-inner">
+        <div class="page-spinner"></div><span>Loading...</span>
+      </div>
+    </div>
+
+
+    <!-- Page wrapper for sticky footer -->
+    <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+    <main class="page-wrapper">
+
+
+      <!-- Navbar -->
+      <%- include('navbar') %>
+      
+      <!-- Hero -->
+      <section class="position-relative pt-5">
+                                 <!--Search form--> 
+                                 <form class="input-group mb-4">
+                                  <input type="text" placeholder="Search for an event..." class="form-control rounded pe-5 search-event-input">
+                                  <i class='search-event bx bx-search position-absolute top-50 end-0 translate-middle-y me-3 fs-lg zindex-5'></i>
+                                </form>
+                                 <!-- Webinar Type Tabs -->
+          <ul class="nav nav-tabs mb-4" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-bs-toggle="tab" href="#upcoming" role="tab">Upcoming Webinars</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" href="#past" role="tab">Past Webinars</a>
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Webinar Content -->
+        <div class="tab-content">
+          <!-- Upcoming Webinars -->
+          <div class="tab-pane fade show active" id="upcoming" role="tabpanel">
+            <div class="event-container">
+              <!-- Webinar 1 -->
+              <div class="event-card card card-body3 border-0 shadow-sm position-relative" data-id="webinar1">
+                <div class="card-data position-relative zindex-2">
+                  <div class="card overflow-hidden">
+                    <div class="row g-0">
+                      <img class="event-img col-sm-4 bg-repeat-0 bg-size-cover" src="/public/assets/img/portfolio/courses/07.jpg" style="object-fit: cover; min-height:max-content; aspect-ratio:4/4;">
+                      <div class="col-sm-8">
+                        <div class="card-body">
+                          <a href="#" class="event-type badge fs-sm text-nav bg-primary text-decoration-none">Live Webinar</a>
+                          <h5 class="event-title card-title">Introduction to AI in Education</h5>
+                          <p class="event-message card-text fs-sm">Join us for an insightful session on how AI is transforming modern education.</p>
+                          <h6 class="card-title" style="color:#9397ad">
+                            <span class="event-date">Dec 15, 2023 - 2:00 PM EST</span>
+                            <span class="event-duration">Duration: 1.5 hours</span>
+                          </h6>
+                          <a class="event-link btn btn-sm btn-primary" href="#">Register Now</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        
+              <!-- Webinar 2 -->
+              <div class="event-card card card-body3 border-0 shadow-sm position-relative" data-id="webinar2">
+                <div class="card-data position-relative zindex-2">
+                  <div class="card overflow-hidden">
+                    <div class="row g-0">
+                      <img class="event-img col-sm-4 bg-repeat-0 bg-size-cover" src="public/assets/img/courses/07.jpg" style="object-fit: cover; min-height:max-content; aspect-ratio:4/4;">
+                      <div class="col-sm-8">
+                        <div class="card-body">
+                          <a href="#" class="event-type badge fs-sm text-nav bg-primary text-decoration-none">Workshop</a>
+                          <h5 class="event-title card-title">Digital Assessment Strategies</h5>
+                          <p class="event-message card-text fs-sm">Interactive workshop on implementing effective digital assessment methods.</p>
+                          <h6 class="card-title" style="color:#9397ad">
+                            <span class="event-date">Dec 20, 2023 - 3:00 PM EST</span>
+                            <span class="event-duration">Duration: 2 hours</span>
+                          </h6>
+                          <a class="event-link btn btn-sm btn-primary" href="#">Register Now</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Past Webinars -->
+          <div class="tab-pane fade" id="past" role="tabpanel">
+            <div class="event-container">
+              <!-- Past Webinar 1 -->
+              <div class="event-card card card-body3 border-0 shadow-sm position-relative" data-id="past-webinar1">
+                <div class="card-data position-relative zindex-2">
+                  <div class="card overflow-hidden">
+                    <div class="row g-0">
+                      <img class="event-img col-sm-4 bg-repeat-0 bg-size-cover" src="/public/assets/img/portfolio/webinar3.jpg" style="object-fit: cover; min-height:max-content; aspect-ratio:4/4;">
+                      <div class="col-sm-8">
+                        <div class="card-body">
+                          <a href="#" class="event-type badge fs-sm text-nav bg-secondary text-decoration-none">Recorded</a>
+                          <h5 class="event-title card-title">Future of EdTech: 2024 Trends</h5>
+                          <p class="event-message card-text fs-sm">Expert discussion on upcoming educational technology trends and their impact.</p>
+                          <h6 class="card-title" style="color:#9397ad">
+                            <span class="event-date">Nov 30, 2023</span>
+                            <span class="event-duration">Duration: 1 hour</span>
+                          </h6>
+                          <a class="event-link btn btn-sm btn-secondary" href="#">Watch Recording</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        
+              <!-- Past Webinar 2 -->
+              <div class="event-card card card-body3 border-0 shadow-sm position-relative" data-id="past-webinar2">
+                <div class="card-data position-relative zindex-2">
+                  <div class="card overflow-hidden">
+                    <div class="row g-0">
+                      <img class="event-img col-sm-4 bg-repeat-0 bg-size-cover" src="/public/assets/img/courses/07.jpg" style="object-fit: cover; min-height:max-content; aspect-ratio:4/4;">
+                      <div class="col-sm-8">
+                        <div class="card-body">
+                          <a href="#" class="event-type badge fs-sm text-nav bg-secondary text-decoration-none">Recorded</a>
+                          <h5 class="event-title card-title">Inclusive Teaching Practices</h5>
+                          <p class="event-message card-text fs-sm">Learn effective strategies for creating inclusive learning environments.</p>
+                          <h6 class="card-title" style="color:#9397ad">
+                            <span class="event-date">Nov 15, 2023</span>
+                            <span class="event-duration">Duration: 1.5 hours</span>
+                          </h6>
+                          <a class="event-link btn btn-sm btn-secondary" href="#">Watch Recording</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+                            <!--event cards-->
+                            <div class="event-container">
+                              <% for(let event in events){ %> 
+                                <% let item = events[event]%>
+                                <% let img = "media_assets/images/event-images/" +  item["img"] %> 
+                                <!-- event cards -->
+                                <div class="event-card card card-body3 border-0 shadow-sm position-relative" data-id="<%= event %>">
+                                  <span class="position-absolute top-0 start-0 w-100 h-100  opacity-10 rounded-3"></span>
+                                  <% if(role === "Admin") {%>
+                                    <!--  Admin event controls to edit or delete events -->
+                                      <div class="admin-event-controls" >
+                                          <button class="edit-event" ><i class="fa-solid fa-pencil"></i></button>
+                                          <button class="delete-event"><i class="fa-solid fa-xmark"></i></button>
+                                      </div>
+                                    <% } %> 
+                                  <div class=" card-data position-relative zindex-2">
+                                  <div class="card overflow-hidden">
+                                    <div class="row g-0"> 
+                                      <img data-img = "<%= item["img"] %> " class="event-img col-sm-4 bg-repeat-0 bg-size-cover" src="<%= img %>" style="object-fit: cover;min-height:max-content;aspect-ratio:4/4;;"></img>
+                                      <div class="col-sm-8">
+                                        <div class="card-body">
+                                          <a href="#" class=" event-type badge fs-sm text-nav bg-secondary text-decoration-none"><%=item["type"] %></a>
+                                          <h5 class="event-title card-title"> <%=item["title"] %></h5>
+                                          <p class="event-message card-text fs-sm">  <%= item["message"] %> </p>
+                                          <h6 class="card-title" style="color:#9397ad"> <span class="event-date"><%= new Date(item["dateTime"]).toLocaleString() %> </span> - <span class="event-location"><%= item["location"] %> </span></h6>
+                                          <% if (item["link"]) { %>
+                                              <a class=" event-link btn btn-sm btn-primary" href=<%= item["link"] %> >RSVP now</a> 
+                                          <% } %> 
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  </div>
+                              </div>
+                            <% } %>
+                            
+                            </div>
+
+        <!-- Background -->
+        <div class="position-fixed top-0 start-0 w-100 bg-position-bottom-center bg-size-cover bg-repeat-0" style="background-image: url(assets/img/about/hero-bg.svg);">
+          <div class="d-lg-none" style="height: 960px;"></div>
+          <div class="d-none d-lg-block" style="height: 768px;"></div>
+        </div>
+
+
+
+ 
+
+ <!-- Categories -->
+ <div class="card card-body4 mb-4">
+  <h3 class="h5">Categories</h3>
+  <ul class="nav flex-column fs-sm">
+    <li class="nav-item mb-1">
+      <a href="#" class="nav-link py-1 px-0 active">All topics <span class="fw-normal opacity-60 ms-1">(48)</span></a>
+    </li>
+    <li class="nav-item mb-1">
+      <a href="#" class="nav-link py-1 px-0">Digital <span class="fw-normal opacity-60 ms-1">(12)</span></a>
+    </li>
+    <li class="nav-item mb-1">
+      <a href="#" class="nav-link py-1 px-0">Marketing <span class="fw-normal opacity-60 ms-1">(5)</span></a>
+    </li>
+    <li class="nav-item mb-1">
+      <a href="#" class="nav-link py-1 px-0">Startups <span class="fw-normal opacity-60 ms-1">(10)</span></a>
+    </li>
+    <li class="nav-item mb-1">
+      <a href="#" class="nav-link py-1 px-0">Technology <span class="fw-normal opacity-60 ms-1">(9)</span></a>
+    </li>
+    <li class="nav-item mb-1">
+      <a href="#" class="nav-link py-1 px-0">Business <span class="fw-normal opacity-60 ms-1">(4)</span></a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link py-1 px-0">Processes & Tools <span class="fw-normal opacity-60 ms-1">(3)</span></a>
+    </li>
+  </ul>
+</div>
+
+                <!-- Tags -->
+                <div class="card card-body5 mb-4">
+                  <h3 class="h5">Tags</h3>
+                  <div class="d-flex flex-wrap">
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#lifestyle</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#ux</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#tech</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#user</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#software</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#it</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#network</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm px-3 my-1 me-2">#engineering</a>
+                  </div>
+                </div>
+ 
+
+    <!-- Footer -->
+    <%- include('footer') %>
+
+    <!-- Back to top button -->
+    <a href="#top" class="btn-scroll-top" data-scroll>
+      <span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span>
+      <i class="btn-scroll-top-icon bx bx-chevron-up"></i>
+    </a>
+
+
+    <!-- Vendor Scripts -->
+    <script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/lightgallery/lightgallery.min.js"></script>
+    <script src="assets/vendor/lightgallery/plugins/video/lg-video.min.js"></script>
+
+    <!-- Main Theme Script -->
+    <script src="assets/js/theme.min.js"></script>
+
+    <% if(role === "Admin") {%>
+      <script>
+        const edit_event =   [...document.querySelectorAll('.edit-event')];
+        const delete_event = [...document.querySelectorAll('.delete-event')];
+        edit_event.forEach(event=>{
+          event.addEventListener("click",()=>{
+              const parent_event_container = event.parentElement.parentElement;
+              let event_data = {
+              img : parent_event_container.querySelector('.event-img').getAttribute('data-img'),
+              type :   parent_event_container.querySelector('.event-type').innerText,
+              title :  parent_event_container.querySelector('.event-title').innerText,
+              message : parent_event_container.querySelector('.event-message').innerText,
+              dateTime : parent_event_container.querySelector('.event-date').innerText,
+              location : parent_event_container.querySelector('.event-location').innerText,
+              link:     parent_event_container.querySelector('.event-link')?parent_event_container.querySelector('.event-link').href:'',
+              documentId: parent_event_container.getAttribute('data-id')
+              }
+              
+              let form = document.createElement("form");
+              for(let val in event_data){
+                let el = document.createElement("input")
+                    el.name = val
+                    el.value = event_data[val].toString()
+                form.appendChild(el)
+              }
+              form.method = "POST";
+              form.action = "/edit-event";
+              document.body.appendChild(form);
+              form.submit();
+          })
+        })
+
+        delete_event.forEach(event=>{
+          event.addEventListener("click",()=>{
+            const parent_event_container = event.parentElement.parentElement;
+            // fetch to delete content
+            fetch('/delete-event', {
+              method: 'delete',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({documentId:parent_event_container.getAttribute('data-id')}),
+            }).then((response) => {
+              if(response.status == 200)
+                parent_event_container.style.display="none";
+            })
+          })
+        })
+        
+      </script>
+    <% } %> 
+    
+    <script>
+      let event_cards = document.querySelectorAll('.event-card')
+      let search = document.querySelector('.search-event')
+      let search_event_input =  document.querySelector('.search-event-input')
+
+      console.log(event_cards)
+      const showAllCards = ()=>{
+        event_cards.forEach(card=>{
+          card.style.display = 'block'
+        })
+      }
+      
+      search.addEventListener("click",()=>{
+        if(!search_event_input.value)
+          return 
+        event_cards.forEach(card=>{
+          console.log(card)
+          if(!card.querySelector('.event-title').innerText.contains(search_event_input.value))
+            card.style.display = 'none'
+        })
+      })
+
+      search_event_input.addEventListener('change',()=>{
+        if(!search_event_input.value)
+          showAllCards()
+      })
+    </script>
+    </body>
+</html>
