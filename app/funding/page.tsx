@@ -1,9 +1,9 @@
 "use client"
 
+import FundingPage from "@/components/FundingPage"
 import Navigation from "../../components/Navigation"
-import FundingPage from "../../components/fundingpage2"
 
-export default function () {
+export default function Funding () {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
