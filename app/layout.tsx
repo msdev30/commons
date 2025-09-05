@@ -5,7 +5,7 @@ import { Open_Sans } from "next/font/google"
 import Script from "next/script"
 import "./globals.css"
 import "./library.css"
-import Footer from "../components/Footer"
+import ConditionalFooter from '@/components/ConditionalFooter'
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -41,7 +41,7 @@ export default function RootLayout({
       </head>
       <body>
         {children}
-        <Footer />
+        <ConditionalFooter />
         <Script src="https://code.jquery.com/jquery-3.6.0.min.js" strategy="beforeInteractive" />
         <Script
           src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
