@@ -16,7 +16,12 @@ type Audience =
   | "Nonprofits"
   | "Higher Ed"
   | "Students"
-type Modality = "Professional Development" | "Classroom Project" | "Curriculum" | "Equipment" | "Conference Travel"
+type Modality =
+  | "Professional Development"
+  | "Classroom Project"
+  | "Curriculum"
+  | "Equipment"
+  | "Conference Travel"
 type GeoScope = "US (National)" | "State/Local" | "International"
 
 interface Grant {
@@ -143,6 +148,12 @@ const dateLabel = (iso?: string, rolling?: boolean) => {
   return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })
 }
 
+const daysUntil = (iso?: string) => {
+  if (!iso) return undefined
+  const diff = Math.ceil((new Date(iso).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+  return diff
+}
+
 function fileDownload(filename: string, data: string, type = "text/calendar") {
   const blob = new Blob([data], { type })
   const link = document.createElement("a")
@@ -154,7 +165,7 @@ function fileDownload(filename: string, data: string, type = "text/calendar") {
 }
 
 function makeICS(grant: Grant) {
-  // Simple single-event ICS (UTC-less for brevity)
+  // Simple single-event ICS (local time)
   const dt = grant.deadline ? grant.deadline.replace(/[-:]/g, "").split(".")[0] : undefined
   const uid = `${grant.id}@erudyte-funding`
   return [
@@ -177,7 +188,7 @@ function makeICS(grant: Grant) {
 /* =========================================
    Small UI pieces
 ========================================= */
-const Badge: React.FC<{ children: React.ReactNode; tone?: "default" | "success" | "warning" }> = ({
+const Badge: React.FC<{ children: React.ReactNode; tone?: "default" | "success" | "warning" | "danger" }> = ({
   children,
   tone = "default",
 }) => {
@@ -186,6 +197,7 @@ const Badge: React.FC<{ children: React.ReactNode; tone?: "default" | "success" 
     default: "bg-gray-100 text-gray-700",
     success: "bg-green-50 text-green-700",
     warning: "bg-amber-50 text-amber-700",
+    danger: "bg-rose-50 text-rose-700",
   } as const
   return <span className={`${base} ${map[tone]}`}>{children}</span>
 }
@@ -293,12 +305,13 @@ const MultiCheck: React.FC<{
   options: string[]
   value: string[]
   onChange: (next: string[]) => void
-  columns?: number
+  columns?: 1 | 2 | 3
 }> = ({ label, options, value, onChange, columns = 2 }) => {
+  const gridCols = columns === 1 ? "grid-cols-1" : columns === 2 ? "grid-cols-2" : "grid-cols-3" // Tailwind-safe
   return (
     <div>
       <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">{label}</div>
-      <div className={`grid grid-cols-${columns} gap-2`}>
+      <div className={`grid ${gridCols} gap-2`}>
         {options.map((opt) => {
           const checked = value.includes(opt)
           return (
@@ -311,6 +324,7 @@ const MultiCheck: React.FC<{
                   if (e.target.checked) onChange([...value, opt])
                   else onChange(value.filter((v) => v !== opt))
                 }}
+                aria-checked={checked}
               />
               <span>{opt}</span>
             </label>
@@ -338,6 +352,7 @@ const NumberRange: React.FC<{
         value={min ?? ""}
         onChange={(e) => onMin(e.target.value === "" ? undefined : Number(e.target.value))}
         className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm"
+        aria-label="Minimum amount"
       />
       <span className="text-gray-400">—</span>
       <input
@@ -347,6 +362,7 @@ const NumberRange: React.FC<{
         value={max ?? ""}
         onChange={(e) => onMax(e.target.value === "" ? undefined : Number(e.target.value))}
         className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm"
+        aria-label="Maximum amount"
       />
     </div>
   </div>
@@ -367,6 +383,15 @@ const GrantCard: React.FC<{
     g.amountMin || g.amountMax
       ? `${toUSD(g.amountMin)}${g.amountMax && g.amountMax !== g.amountMin ? ` – ${toUSD(g.amountMax)}` : ""}`
       : "Varies"
+  const dueIn = daysUntil(g.deadline)
+  const dueBadge = !g.rolling && typeof dueIn === "number" ? (
+    <Badge tone={dueIn <= 7 ? "danger" : dueIn <= 21 ? "warning" : "default"}>{
+      dueIn >= 0 ? `Due in ${dueIn}d` : "Past deadline"
+    }</Badge>
+  ) : g.rolling ? (
+    <Badge tone="success">Rolling</Badge>
+  ) : null
+
   const meta = (
     <div className="flex flex-wrap gap-2 text-xs text-gray-600">
       <span className="inline-flex items-center gap-1">
@@ -380,7 +405,7 @@ const GrantCard: React.FC<{
         {g.location ? ` · ${g.location}` : ""}
       </span>
       {g.matchRequired && <Badge tone="warning">Match required</Badge>}
-      {g.rolling && <Badge tone="success">Rolling</Badge>}
+      {dueBadge}
     </div>
   )
 
@@ -419,6 +444,7 @@ const GrantCard: React.FC<{
       <button
         onClick={() => onSave(g.id)}
         className={`inline-flex items-center gap-1 rounded-xl px-3 py-2 text-sm ${saved ? "border border-gray-200 bg-white" : "bg-amber-500 text-white hover:bg-amber-600"}`}
+        aria-pressed={saved}
       >
         {saved ? "Saved" : "Save"}
       </button>
@@ -427,7 +453,7 @@ const GrantCard: React.FC<{
 
   if (view === "list") {
     return (
-      <article className="grid grid-cols-[1fr,auto] gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
+      <article className="grid grid-cols-1 md:grid-cols-[1fr,auto] gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <Badge>{g.type}</Badge>
@@ -439,7 +465,7 @@ const GrantCard: React.FC<{
           {tags}
           {actions}
         </div>
-        <aside className="w-56">
+        <aside className="md:w-56">
           <div className="rounded-xl border border-gray-100 bg-gray-50 p-3">
             <div className="text-xs uppercase tracking-wide text-gray-500 mb-1">Audience</div>
             <div className="flex flex-wrap gap-1">
@@ -480,6 +506,7 @@ const Drawer: React.FC<{ grant?: Grant; onClose: () => void }> = ({ grant, onClo
     grant.amountMin || grant.amountMax
       ? `${toUSD(grant.amountMin)}${grant.amountMax && grant.amountMax !== grant.amountMin ? ` – ${toUSD(grant.amountMax)}` : ""}`
       : "Varies"
+  const dueIn = daysUntil(grant.deadline)
   return (
     <div className="fixed inset-0 z-40">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
@@ -487,10 +514,15 @@ const Drawer: React.FC<{ grant?: Grant; onClose: () => void }> = ({ grant, onClo
         <div className="p-6 border-b">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <Badge>{grant.type}</Badge>
                 {grant.rolling && <Badge tone="success">Rolling</Badge>}
                 {grant.matchRequired && <Badge tone="warning">Match required</Badge>}
+                {!grant.rolling && typeof dueIn === "number" && (
+                  <Badge tone={dueIn <= 7 ? "danger" : dueIn <= 21 ? "warning" : "default"}>
+                    {dueIn >= 0 ? `Due in ${dueIn}d` : "Past deadline"}
+                  </Badge>
+                )}
               </div>
               <h2 className="mt-2 text-2xl font-bold">{grant.title}</h2>
               <div className="text-gray-600">{grant.sponsor}</div>
@@ -586,20 +618,29 @@ export default function FundingPage() {
   const [saved, setSaved] = React.useState<string[]>([])
   const [drawer, setDrawer] = React.useState<Grant | undefined>(undefined)
 
+  // Debounced search (feels snappier with large datasets)
+  const [qInput, setQInput] = React.useState("")
+  React.useEffect(() => {
+    const t = setTimeout(() => setFilters((f) => ({ ...f, q: qInput })), 150)
+    return () => clearTimeout(t)
+  }, [qInput])
+
   // SEARCH + FILTER + SORT
   const filtered = GRANTS.filter((g) => {
+    const q = filters.q.trim().toLowerCase()
     const qpass =
-      !filters.q ||
+      !q ||
       [g.title, g.sponsor, g.summary, ...(g.tags || []), ...g.audience, ...g.modalities]
         .join(" ")
         .toLowerCase()
-        .includes(filters.q.toLowerCase())
+        .includes(q)
 
     const typePass = !filters.types.length || filters.types.includes(g.type)
     const audiencePass = !filters.audience.length || g.audience.some((a) => filters.audience.includes(a))
     const modalityPass = !filters.modalities.length || g.modalities.some((m) => filters.modalities.includes(m))
     const geoPass = !filters.geo.length || filters.geo.includes(g.geo)
     const statePass = !filters.states.length || (g.location ? filters.states.includes(g.location) : false)
+
     const minPass =
       filters.minAmount === undefined ||
       (g.amountMin ?? 0) >= filters.minAmount ||
@@ -608,6 +649,7 @@ export default function FundingPage() {
       filters.maxAmount === undefined ||
       (g.amountMax ?? 0) <= filters.maxAmount ||
       (g.amountMin ?? 0) <= filters.maxAmount
+
     const rollingPass = !filters.rollingOnly || !!g.rolling
     const matchPass = !filters.matchOnly || !!g.matchRequired
 
@@ -615,16 +657,16 @@ export default function FundingPage() {
       filters.deadlines === "all"
         ? true
         : filters.deadlines === "rolling"
-          ? !!g.rolling
-          : (() => {
-              if (!g.deadline) return false
-              const now = Date.now()
-              const diffDays = (new Date(g.deadline).getTime() - now) / (1000 * 60 * 60 * 24)
-              if (filters.deadlines === "30d") return diffDays <= 30
-              if (filters.deadlines === "60d") return diffDays <= 60
-              if (filters.deadlines === "90d") return diffDays <= 90
-              return true
-            })()
+        ? !!g.rolling
+        : (() => {
+            if (!g.deadline) return false
+            const now = Date.now()
+            const diffDays = (new Date(g.deadline).getTime() - now) / (1000 * 60 * 60 * 24)
+            if (filters.deadlines === "30d") return diffDays <= 30
+            if (filters.deadlines === "60d") return diffDays <= 60
+            if (filters.deadlines === "90d") return diffDays <= 90
+            return true
+          })()
 
     return (
       qpass &&
@@ -650,12 +692,12 @@ export default function FundingPage() {
       const bMax = b.amountMax ?? b.amountMin ?? 0
       return bMax - aMax // highest first
     }
-    // relevance: naive (title match first)
+    // relevance (simple heuristic)
     const q = filters.q.toLowerCase()
     const score = (g: Grant) =>
-      (g.title.toLowerCase().includes(q) ? 3 : 0) +
-      (g.summary.toLowerCase().includes(q) ? 1 : 0) +
-      ((g.tags || []).some((t) => t.toLowerCase().includes(q)) ? 1 : 0)
+      (q && g.title.toLowerCase().includes(q) ? 3 : 0) +
+      (q && g.summary.toLowerCase().includes(q) ? 1 : 0) +
+      (q && (g.tags || []).some((t) => t.toLowerCase().includes(q)) ? 1 : 0)
     return score(b) - score(a)
   })
 
@@ -710,25 +752,22 @@ export default function FundingPage() {
   const clearFilters = () => setFilters(defaultFilters)
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[radial-gradient(60%_40%_at_50%_-10%,#f4e8f7,transparent_60%),radial-gradient(60%_40%_at_120%_10%,#e8ecff,transparent_60%)]">
       {/* Top bar */}
-      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100">
+      <header className="sticky top-0 z-30 bg-white/70 backdrop-blur border-b border-gray-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-semibold">
-              EH
-            </div>
-            <span className="font-semibold">Funding</span>
           </div>
 
           <div className="hidden md:flex items-center gap-3">
             <div className="relative w-[360px]">
               <Icon.Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
-                value={filters.q}
-                onChange={(e) => setFilters({ ...filters, q: e.target.value })}
+                value={qInput}
+                onChange={(e) => setQInput(e.target.value)}
                 placeholder="Search grants, sponsors, tags…"
-                className="w-full rounded-xl border border-gray-200 pl-9 pr-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-900/10"
+                className="w-full rounded-xl border border-gray-200 pl-9 pr-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-900/10 bg-white/80"
+                aria-label="Search grants"
               />
             </div>
             <button className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-3 py-2 text-sm bg-white hover:bg-gray-50">
@@ -748,7 +787,7 @@ export default function FundingPage() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-12 gap-6">
         {/* Filters */}
         <aside className="col-span-12 md:col-span-3 space-y-4">
-          <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-4 space-y-4">
+          <div className="rounded-2xl bg-white/90 backdrop-blur border border-gray-100 shadow-sm p-4 space-y-4">
             <div className="flex items-center justify-between">
               <div className="font-semibold">Filters</div>
               <button onClick={clearFilters} className="text-sm text-gray-600 hover:underline">
@@ -815,7 +854,7 @@ export default function FundingPage() {
                     states: e.target.value
                       .split(",")
                       .map((s) => s.trim().toUpperCase())
-                      .filter(Boolean),
+                      .filter((s) => /^[A-Z]{2}$/.test(s)),
                   })
                 }
                 className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm"
@@ -868,7 +907,7 @@ export default function FundingPage() {
           </div>
 
           {/* Saved search & tips */}
-          <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-4 space-y-3">
+          <div className="rounded-2xl bg-white/90 backdrop-blur border border-gray-100 shadow-sm p-4 space-y-3">
             <div className="font-semibold">Saved search</div>
             <button className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm hover:bg-gray-50">
               Save current filters
@@ -878,7 +917,7 @@ export default function FundingPage() {
             </button>
           </div>
 
-          <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-4">
+          <div className="rounded-2xl bg-white/90 backdrop-blur border border-gray-100 shadow-sm p-4">
             <div className="text-xs uppercase tracking-wider text-gray-500 mb-2">Grant writing tips</div>
             <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
               <li>Mirror the funder’s priority language in your objectives.</li>
@@ -895,8 +934,7 @@ export default function FundingPage() {
               <span className="font-semibold">{filtered.length}</span> opportunities
               {filters.q ? (
                 <>
-                  {" "}
-                  · for “<span className="font-semibold">{filters.q}</span>”
+                  {" "}· for “<span className="font-semibold">{filters.q}</span>”
                 </>
               ) : null}
             </div>
@@ -921,7 +959,7 @@ export default function FundingPage() {
           </div>
 
           {pageItems.length === 0 ? (
-            <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-10 text-center">
+            <div className="rounded-2xl bg-white/80 backdrop-blur border border-gray-100 shadow-sm p-10 text-center">
               <div className="text-5xl mb-2">🔎</div>
               <h3 className="text-lg font-semibold mb-2">No results</h3>
               <p className="text-gray-600">Try broadening your filters or clearing the search.</p>

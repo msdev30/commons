@@ -32,13 +32,13 @@ export default function Navigation() {
             Library
           </Link>
           <Link
-            href="/funding-opportunities"
+            href="/funding"
             className="nav-link text-gray-700 hover:text-blue-600 transition-colors font-medium"
           >
             Funding
           </Link>
           <Link href="/events" className="nav-link text-gray-700 hover:text-blue-600 transition-colors font-medium">
-            Webinars
+            Events
           </Link>
 
           <Link
