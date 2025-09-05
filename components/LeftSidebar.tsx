@@ -109,7 +109,7 @@ const LeftSidebar: React.FC = () => {
         <div
           className={[
             "relative rounded-2xl border border-white/30 bg-white/70",
-            "backdrop-blur-xl shadow-xl shadow-black/5 p-2 mb-12"
+            "backdrop-blur-xl shadow-xl shadow-black/5 p-2 mb-44"
           ].join(" ")}
         >
           {/* soft gradient halo */}
@@ -137,8 +137,16 @@ const LeftSidebar: React.FC = () => {
           {/* HUBS */}
           <SectionTitle isCollapsed={collapsed.hubs} onToggle={() => setCollapsed(prev => ({...prev, hubs: !prev.hubs}))}>Hubs</SectionTitle>
           {!collapsed.hubs && <div className="space-y-1 px-2 pb-2">
-            <Item icon={<Icon.PlusCircle className="h-4 w-4" />} label="Create Hub" />
-            <Item icon={<Icon.Settings className="h-4 w-4" />} label="Manage Hub" />
+            <Item 
+              icon={<Icon.PlusCircle className="h-4 w-4" />} 
+              label="Create Hub" 
+              onClick={() => window.location.href = '/hub'}
+            />
+            <Item 
+              icon={<Icon.Settings className="h-4 w-4" />} 
+              label="Manage Hub" 
+              onClick={() => window.location.href = '/hub'}
+            />
             <div className="pt-1 space-y-1">
               <HubPill name="STEM Teachers Network" isGroup groupColor="from-purple-500 to-pink-500" />
               <HubPill name="ELL & MLL Champions" isGroup groupColor="from-cyan-500 to-blue-500" />
@@ -151,18 +159,20 @@ const LeftSidebar: React.FC = () => {
           {/* RESOURCES */}
           <SectionTitle isCollapsed={collapsed.resources} onToggle={() => setCollapsed(prev => ({...prev, resources: !prev.resources}))}>Resources</SectionTitle>
           {!collapsed.resources && <div className="space-y-1 px-2 pb-2">
-            <Item icon={<Icon.Book className="h-4 w-4" />} label="Hubs" />
-            <Item icon={<Icon.Hash className="h-4 w-4" />} label="Topics" />
-            <Item icon={<Icon.Globe className="h-4 w-4" />} label="E-Commons Pro" badge="New" />
-            <Item icon={<Icon.Info className="h-4 w-4" />} label="About" />
+            <Item icon={<Icon.HubIcon className="h-4 w-4" />} label="Hubs" />
+            <Item icon={<Icon.Grid className="h-4 w-4" />} label="Topics" />
+            <Item icon={<Icon.Crown className="h-4 w-4" />} label="E-Commons Pro" badge="New" />
+            <Item icon={<Icon.HelpCircle className="h-4 w-4" />} label="Help" />
+            <Item icon={<Icon.BookOpen className="h-4 w-4" />} label="About" />
           </div>}
 
           {/* POLICIES */}
-          <SectionTitle isCollapsed={collapsed.rules} onToggle={() => setCollapsed(prev => ({...prev, rules: !prev.rules}))}>E-Commons Rules</SectionTitle>
+          <SectionTitle isCollapsed={collapsed.rules} onToggle={() => setCollapsed(prev => ({...prev, rules: !prev.rules}))}>Policies</SectionTitle>
           {!collapsed.rules && <div className="space-y-1 px-2 pb-2">
-            <Item icon={<Icon.Shield className="h-4 w-4" />} label="Privacy Policy" />
-            <Item icon={<Icon.Shield className="h-4 w-4" />} label="User Agreement" />
-            <Item icon={<Icon.Shield className="h-4 w-4" />} label="Accessibility" />
+            <Item icon={<Icon.Scale className="h-4 w-4" />} label="E-Commons Rules" />
+            <Item icon={<Icon.Gavel className="h-4 w-4" />} label="Privacy Policy" />
+            <Item icon={<Icon.FileText className="h-4 w-4" />} label="User Agreement" />
+            <Item icon={<Icon.Eye className="h-4 w-4" />} label="Accessibility" />
           </div>}
         </div>
       </div>
