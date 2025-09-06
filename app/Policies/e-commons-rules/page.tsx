@@ -1,3 +1,6 @@
+"use client"
+
+import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import PageShell from "@/components/policy/PageShell"
 import Section from "@/components/policy/Section"
@@ -6,509 +9,304 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import Navigation from "@/components/Navigation"
 
+/* =========================
+   Anchors / Scrollspy
+========================= */
+const SECTIONS = [
+  { id: "principles", label: "Principles" },
+  { id: "encouraged", label: "Encouraged" },
+  { id: "not-allowed", label: "Prohibited" },
+  { id: "moderation", label: "Moderation" },
+  { id: "reporting", label: "Reporting" },
+  { id: "updates", label: "Updates" },
+  { id: "faq", label: "FAQ" },
+]
+
+function useScrollSpy(ids: string[]) {
+  const [active, setActive] = useState(ids[0])
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const vis = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+        if (vis?.target?.id) setActive(vis.target.id)
+      },
+      { rootMargin: "-40% 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75] }
+    )
+    ids.forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) obs.observe(el)
+    })
+    return () => obs.disconnect()
+  }, [ids])
+  return active
+}
+
+/* =========================
+   On This Page (top shell)
+========================= */
+function OnThisPageTop() {
+  const active = useScrollSpy(SECTIONS.map((s) => s.id))
+  return (
+    <div className="sticky top-20 z-20 mt-6 rounded-2xl border border-zinc-200/70 bg-white/70 dark:border-zinc-800/60 dark:bg-zinc-900/50 backdrop-blur-md">
+      <div className="flex items-center gap-2 px-4 py-3">
+        <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500">On this page</span>
+        <div className="mx-2 h-4 w-px bg-zinc-300/60 dark:bg-zinc-700/60" />
+        <div className="flex-1 overflow-x-auto no-scrollbar">
+          <div className="flex gap-2">
+            {SECTIONS.map((s) => {
+              const isActive = active === s.id
+              return (
+                <a
+                  key={s.id}
+                  href={`#${s.id}`}
+                  className={[
+                    "whitespace-nowrap text-sm px-3 py-1.5 rounded-full transition",
+                    "ring-1 ring-zinc-300/70 dark:ring-zinc-700/70",
+                    "text-zinc-800 dark:text-zinc-200 no-underline",
+                    isActive
+                      ? "bg-emerald-500/10 ring-emerald-400/70 dark:ring-emerald-500/70 font-medium"
+                      : "hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  ].join(" ")}
+                >
+                  {s.label}
+                </a>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* =========================
+   Right Scroll Rail (subtle)
+========================= */
+function ScrollRail() {
+  const active = useScrollSpy(SECTIONS.map((s) => s.id))
+  return (
+    <div className="hidden xl:block fixed right-6 top-32 z-30">
+      <nav aria-label="Section progress" className="flex flex-col gap-3 items-center">
+        {SECTIONS.map((s) => {
+          const isActive = active === s.id
+          return (
+            <a
+              key={s.id}
+              href={`#${s.id}`}
+              className={[
+                "group relative flex h-3.5 w-3.5 items-center justify-center rounded-full transition-all",
+                "ring-1 ring-zinc-300 dark:ring-zinc-700",
+                isActive
+                  ? "scale-110 bg-emerald-500/90 ring-emerald-400 dark:ring-emerald-500"
+                  : "bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600"
+              ].join(" ")}
+            >
+              <span className="pointer-events-none absolute -left-2 -right-2 -top-2 -bottom-2" />
+              <span className="absolute left-5 top-1/2 -translate-y-1/2 whitespace-nowrap text-xs text-muted-foreground opacity-0 translate-x-[-6px] transition-all group-hover:opacity-100 group-hover:translate-x-0">
+                {s.label}
+              </span>
+            </a>
+          )
+        })}
+      </nav>
+    </div>
+  )
+}
+
 export default function Page() {
+  const heroBg =
+    "bg-gradient-to-br from-emerald-50 via-rose-50 to-amber-50 dark:from-emerald-950/40 dark:via-rose-950/30 dark:to-amber-950/30"
+
   return (
     <>
       <Navigation />
-      <div className="pb-40">
+
+      {/* Neutralize underlines/blue in floating shells */}
+      <style jsx global>{`
+        .policy-toc a,
+        .policy-toc a:visited {
+          text-decoration: none !important;
+          color: inherit !important;
+        }
+        .policy-toc a {
+          border-left: 2px solid transparent;
+          padding-left: 10px;
+          display: block;
+          border-radius: 6px;
+        }
+        .policy-toc a[aria-current="true"] {
+          border-left-color: rgb(16 185 129);
+          background: rgba(16,185,129,0.08);
+          font-weight: 600;
+        }
+        .no-underline a { text-decoration: none; color: inherit; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { scrollbar-width: none; }
+      `}</style>
+
+      <div className="pb-40 relative">
+        <ScrollRail />
+
         <PageShell
           icon={<Users className="h-6 w-6" />}
           title="Community Guidelines"
-          subtitle="Building a safe, supportive, and professional space for educators and learners. These guidelines help us maintain constructive conversations aligned with our educational mission."
+          subtitle="A safe, supportive, professional space for learning and collaboration."
           lastUpdated="Aug 27, 2025"
           version="2.1"
         >
-          {/* Hero Statement */}
-          <Alert className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
-            <Heart className="h-4 w-4 text-blue-600" />
-            <AlertTitle className="text-blue-900 dark:text-blue-100">Our Community Vision</AlertTitle>
-            <AlertDescription className="text-blue-800 dark:text-blue-200">
-              Erudyte is more than a learning platform — it's a community of educators, students, and lifelong learners committed to growth, collaboration, and mutual support. These guidelines help us create an environment where everyone can learn, teach, and thrive together.
+          {/* Hero */}
+          <Alert className={`${heroBg} border-emerald-200 dark:border-emerald-800 rounded-2xl`}>
+            <Heart className="h-4 w-4 text-emerald-600" />
+            <AlertTitle className="text-zinc-900 dark:text-zinc-100">Our Community Vision</AlertTitle>
+            <AlertDescription className="text-zinc-800/80 dark:text-zinc-200/90">
+              Erudyte is more than a learning platform — it’s a community committed to growth, collaboration, and mutual support.
             </AlertDescription>
           </Alert>
 
+          {/* On this page (top shell) */}
+          <OnThisPageTop />
+
           {/* Quick Reference */}
           <div className="my-8">
-            <Alert>
-              <CheckCircle className="h-4 w-4" />
+            <Alert className="rounded-2xl border-emerald-200 bg-emerald-50/70 dark:border-emerald-800 dark:bg-emerald-950">
+              <CheckCircle className="h-4 w-4 text-emerald-600" />
               <AlertTitle>Quick Reference (TL;DR)</AlertTitle>
               <AlertDescription>
-                Be respectful and inclusive. Protect student privacy. Share evidence-based resources. No harassment, spam, or unauthorized solicitation. Report concerns promptly. Focus on constructive dialogue and professional growth.
+                Be respectful and inclusive. Protect student privacy. Share evidence-based resources. No harassment or spam.
+                Report concerns promptly. Keep it constructive and professional.
               </AlertDescription>
             </Alert>
           </div>
 
-          {/* Community Stats */}
+          {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-8">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Our Approach</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-lg font-bold text-green-600">Positive First</div>
-                <p className="text-xs text-muted-foreground mt-1">Support over punishment</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Response Time</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-lg font-bold text-blue-600">24 Hours</div>
-                <p className="text-xs text-muted-foreground mt-1">For community reports</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Appeal Period</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-lg font-bold text-purple-600">14 Days</div>
-                <p className="text-xs text-muted-foreground mt-1">To contest decisions</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Focus</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-lg font-bold">Education</div>
-                <p className="text-xs text-muted-foreground mt-1">Learning-centered community</p>
-              </CardContent>
-            </Card>
+            {[
+              { k: "Our Approach", v: "Positive First", c: "text-emerald-600" },
+              { k: "Response Time", v: "24 Hours", c: "text-rose-600" },
+              { k: "Appeal Period", v: "14 Days", c: "text-violet-600" },
+              { k: "Focus", v: "Education", c: "" },
+            ].map((s) => (
+              <Card key={s.k} className="bg-white/70 dark:bg-zinc-900/60 backdrop-blur-sm rounded-2xl">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">{s.k}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className={`text-lg font-bold ${s.c}`}>{s.v}</div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {s.k === "Our Approach" && "Support over punishment"}
+                    {s.k === "Response Time" && "For community reports"}
+                    {s.k === "Appeal Period" && "To contest decisions"}
+                    {s.k === "Focus" && "Learning-centered community"}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
 
-          {/* Core Principles */}
-          <Section id="principles" title="Community Principles">
+          {/* Principles */}
+          <Section id="principles" title="Community Principles" className="scroll-mt-28">
             <div className="space-y-6">
               <p className="text-muted-foreground">
-                Our community guidelines are built on fundamental principles that create a safe, inclusive, and productive learning environment for everyone.
+                Our community guidelines create a safe, inclusive, and productive learning environment for everyone. We foster genuine educational growth through respectful collaboration and knowledge sharing, where diverse perspectives come together in an atmosphere of mutual respect and intellectual curiosity.
               </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base text-green-900 dark:text-green-100">
-                      <Heart className="h-4 w-4" />
-                      Respect & Inclusion
-                    </CardTitle>
-                    <CardDescription className="text-green-700 dark:text-green-300">Creating an environment where everyone feels valued</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <ul className="space-y-1 text-sm text-green-800 dark:text-green-200">
-                      <li>• <strong>Assume good intent</strong> — approach disagreements with curiosity, not hostility</li>
-                      <li>• <strong>Embrace diversity</strong> — welcome different perspectives, backgrounds, and experiences</li>
-                      <li>• <strong>Zero tolerance for hate</strong> — no discrimination based on identity, background, or beliefs</li>
-                      <li>• <strong>Constructive dialogue</strong> — focus on ideas and solutions, not personal attacks</li>
-                      <li>• <strong>Cultural sensitivity</strong> — respect global perspectives and educational contexts</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base text-blue-900 dark:text-blue-100">
-                      <Shield className="h-4 w-4" />
-                      Student Safety & Privacy
-                    </CardTitle>
-                    <CardDescription className="text-blue-700 dark:text-blue-300">Protecting the learners we serve</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <ul className="space-y-1 text-sm text-blue-800 dark:text-blue-200">
-                      <li>• <strong>No identifiable student data</strong> — never post names, photos, or personal information</li>
-                      <li>• <strong>Anonymize examples</strong> — share teaching stories without revealing student identity</li>
-                      <li>• <strong>Obtain consent</strong> — get permission before sharing student work or achievements</li>
-                      <li>• <strong>FERPA compliance</strong> — follow educational privacy laws and institutional policies</li>
-                      <li>• <strong>Age-appropriate content</strong> — ensure all shared resources are suitable for educational settings</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-purple-200 bg-purple-50 dark:border-purple-800 dark:bg-purple-950">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base text-purple-900 dark:text-purple-100">
-                      <BookOpen className="h-4 w-4" />
-                      Evidence-Based Sharing
-                    </CardTitle>
-                    <CardDescription className="text-purple-700 dark:text-purple-300">Promoting quality educational discourse</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <ul className="space-y-1 text-sm text-purple-800 dark:text-purple-200">
-                      <li>• <strong>Cite sources</strong> — back up claims with research, data, or credible references</li>
-                      <li>• <strong>Share tested strategies</strong> — prioritize classroom-proven approaches over theory alone</li>
-                      <li>• <strong>Acknowledge limitations</strong> — be honest about context and scope of recommendations</li>
-                      <li>• <strong>Peer review mindset</strong> — welcome constructive feedback and alternative perspectives</li>
-                      <li>• <strong>Combat misinformation</strong> — help maintain high standards for educational content</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-orange-200 bg-orange-50 dark:border-orange-800 dark:bg-orange-950">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base text-orange-900 dark:text-orange-100">
-                      <Award className="h-4 w-4" />
-                      Professional Excellence
-                    </CardTitle>
-                    <CardDescription className="text-orange-700 dark:text-orange-300">Maintaining high standards for professional conduct</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <ul className="space-y-1 text-sm text-orange-800 dark:text-orange-200">
-                      <li>• <strong>No harassment or doxxing</strong> — respect boundaries and privacy</li>
-                      <li>• <strong>Professional language</strong> — maintain appropriate tone and content</li>
-                      <li>• <strong>Ethical practices</strong> — follow educational ethics and institutional guidelines</li>
-                      <li>• <strong>Intellectual honesty</strong> — credit others' work and avoid plagiarism</li>
-                      <li>• <strong>Collaborative spirit</strong> — support colleagues and share knowledge generously</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-              </div>
+              <p className="text-muted-foreground">
+                Effective learning communities require both individual accountability and collective responsibility. We emphasize constructive dialogue over debate, understanding over judgment, and growth over perfection. Our guidelines channel expression in ways that benefit the entire community rather than restricting it.
+              </p>
+              <p className="text-muted-foreground">
+                Everyone brings valuable knowledge and experiences regardless of skill level or background. We create space for beginners to ask questions without fear while providing opportunities for advanced learners to share expertise meaningfully. Our commitment extends beyond preventing harm to actively cultivating positive interactions and mutual support.
+              </p>
             </div>
           </Section>
 
-          {/* What's Encouraged */}
-          <Section id="encouraged" title="Encouraged Community Contributions">
+          {/* Encouraged */}
+          <Section id="encouraged" title="Encouraged Community Contributions" className="scroll-mt-28">
             <div className="space-y-6">
               <p className="text-muted-foreground">
-                We celebrate content and interactions that advance educational excellence and community building. Here's what we love to see:
+                We celebrate high-quality educational content that forms the backbone of our community. This includes well-researched posts, thoughtful questions that spark meaningful discussion, and comprehensive resources that help others learn. We particularly value contributions that demonstrate original thinking, cite reliable sources, and present complex topics in accessible ways.
               </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base">
-                      <BookOpen className="h-4 w-4" />
-                      Educational Resources & Strategies
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <ul className="space-y-1 text-sm">
-                      <li>• <strong>Classroom-tested strategies</strong> — share what actually works in practice</li>
-                      <li>• <strong>Templates and rubrics</strong> — tools that other educators can adapt</li>
-                      <li>• <strong>Lesson plan examples</strong> — creative approaches to curriculum challenges</li>
-                      <li>• <strong>Assessment techniques</strong> — innovative ways to measure learning</li>
-                      <li>• <strong>Technology integration</strong> — effective uses of educational tools</li>
-                      <li>• <strong>Differentiation methods</strong> — strategies for diverse learning needs</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base">
-                      <MessageSquare className="h-4 w-4" />
-                      Professional Development & Growth
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <ul className="space-y-1 text-sm">
-                      <li>• <strong>Thoughtful questions</strong> — seeking advice and diverse perspectives</li>
-                      <li>• <strong>Constructive feedback</strong> — helpful, specific suggestions for improvement</li>
-                      <li>• <strong>PD opportunities</strong> — conferences, workshops, and training programs</li>
-                      <li>• <strong>Grant information</strong> — funding opportunities for educators</li>
-                      <li>• <strong>Research summaries</strong> — accessible breakdowns of educational research</li>
-                      <li>• <strong>Career guidance</strong> — mentoring and professional advice</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base">
-                      <Heart className="h-4 w-4" />
-                      Community Building & Support
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <ul className="space-y-1 text-sm">
-                      <li>• <strong>Celebrating successes</strong> — recognizing achievements and milestones</li>
-                      <li>• <strong>Learning from challenges</strong> — honest discussions about difficulties</li>
-                      <li>• <strong>Peer encouragement</strong> — supporting colleagues through tough times</li>
-                      <li>• <strong>Welcome messages</strong> — helping new members feel included</li>
-                      <li>• <strong>Cultural exchange</strong> — sharing global educational perspectives</li>
-                      <li>• <strong>Wellness discussions</strong> — supporting educator mental health and work-life balance</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base">
-                      <Award className="h-4 w-4" />
-                      Quality Content Standards
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <ul className="space-y-1 text-sm">
-                      <li>• <strong>Original insights</strong> — your unique experiences and perspectives</li>
-                      <li>• <strong>Detailed explanations</strong> — context and background for recommendations</li>
-                      <li>• <strong>Follow-up engagement</strong> — responding to questions and comments</li>
-                      <li>• <strong>Accessibility focus</strong> — inclusive practices for all learners</li>
-                      <li>• <strong>Continuous improvement</strong> — updating and refining shared resources</li>
-                      <li>• <strong>Cross-curricular connections</strong> — interdisciplinary approaches</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <Alert>
-                <CheckCircle className="h-4 w-4" />
-                <AlertTitle>Recognition Program</AlertTitle>
-                <AlertDescription>
-                  Outstanding community contributors may be featured in our newsletter, invited to special events, or recognized with community badges. We celebrate educators who embody these values!
-                </AlertDescription>
-              </Alert>
+              <p className="text-muted-foreground">
+                Collaborative learning experiences are highly encouraged, such as study groups, peer review sessions, and mentorship relationships. We celebrate members who organize learning opportunities through formal presentations, informal discussions, or collaborative projects that strengthen community bonds while advancing educational goals.
+              </p>
+              <p className="text-muted-foreground">
+                Constructive feedback and supportive interactions are essential to our ecosystem. We encourage detailed, actionable feedback that helps others improve, recognition of achievements, and celebration of milestones. Resource sharing, accessibility efforts, and knowledge preservation create lasting value for current and future community members.
+              </p>
             </div>
           </Section>
 
-          {/* What's Not Allowed */}
-          <Section id="not-allowed" title="Prohibited Content and Behavior">
+          {/* Prohibited */}
+          <Section id="not-allowed" title="Prohibited Content and Behavior" className="scroll-mt-28">
             <div className="space-y-6">
-              <Alert className="border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950">
-                <AlertTriangle className="h-4 w-4 text-red-600" />
-                <AlertTitle className="text-red-900 dark:text-red-100">Zero Tolerance Policies</AlertTitle>
-                <AlertDescription className="text-red-800 dark:text-red-200">
-                  Some behaviors result in immediate account suspension or termination. We take these violations seriously to protect our community.
-                </AlertDescription>
-              </Alert>
-
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Card className="border-red-200">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm flex items-center gap-2 text-red-700">
-                        <Badge variant="destructive">Immediate Action</Badge>
-                        Harassment & Abuse
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      <ul className="space-y-1 text-xs">
-                        <li>• <strong>Personal attacks</strong> — targeting individuals with hostile language</li>
-                        <li>• <strong>Harassment campaigns</strong> — coordinated targeting or doxxing</li>
-                        <li>• <strong>Discriminatory content</strong> — based on race, gender, religion, etc.</li>
-                        <li>• <strong>Threats or intimidation</strong> — explicit or implied harm</li>
-                        <li>• <strong>Off-platform targeting</strong> — pursuing conflicts outside Erudyte</li>
-                      </ul>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border-red-200">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm flex items-center gap-2 text-red-700">
-                        <Badge variant="destructive">Privacy Violation</Badge>
-                        Student Safety
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      <ul className="space-y-1 text-xs">
-                        <li>• <strong>Student PII</strong> — names, photos, or identifying information</li>
-                        <li>• <strong>Unauthorized sharing</strong> — student work without consent</li>
-                        <li>• <strong>Inappropriate content</strong> — age-inappropriate or harmful material</li>
-                        <li>• <strong>Safety violations</strong> — practices that could endanger students</li>
-                        <li>• <strong>FERPA violations</strong> — educational privacy law breaches</li>
-                      </ul>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border-orange-200">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm flex items-center gap-2 text-orange-700">
-                        <Badge variant="secondary">Warning First</Badge>
-                        Commercial Violations
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      <ul className="space-y-1 text-xs">
-                        <li>• <strong>Unauthorized marketing</strong> — promoting products outside partner spaces</li>
-                        <li>• <strong>Lead generation</strong> — collecting contact information for sales</li>
-                        <li>• <strong>MLM schemes</strong> — multi-level marketing or pyramid structures</li>
-                        <li>• <strong>Job spam</strong> — excessive posting of employment opportunities</li>
-                        <li>• <strong>Affiliate links</strong> — undisclosed commercial relationships</li>
-                      </ul>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border-orange-200">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm flex items-center gap-2 text-orange-700">
-                        <Badge variant="secondary">Content Issues</Badge>
-                        Quality & Integrity
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      <ul className="space-y-1 text-xs">
-                        <li>• <strong>Plagiarism</strong> — using others' work without proper attribution</li>
-                        <li>• <strong>Misinformation</strong> — sharing false or misleading educational claims</li>
-                        <li>• <strong>Copyright violations</strong> — sharing protected materials without rights</li>
-                        <li>• <strong>AI content misrepresentation</strong> — claiming AI-generated work as personal</li>
-                        <li>• <strong>Spam or duplicate posts</strong> — excessive repetitive content</li>
-                      </ul>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-
-              <div>
-                <h4 className="font-semibold mb-3">Specific Content Restrictions</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm">🚫 Copyrighted Material</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      <ul className="space-y-1 text-xs">
-                        <li>• Textbook pages or content without permission</li>
-                        <li>• Copyrighted images, videos, or music</li>
-                        <li>• Trademarked logos or branded content</li>
-                        <li>• Assessment materials from test publishers</li>
-                      </ul>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm">🚫 Inappropriate Content</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      <ul className="space-y-1 text-xs">
-                        <li>• Adult content or sexual material</li>
-                        <li>• Violence or graphic imagery</li>
-                        <li>• Illegal activities or substance abuse</li>
-                        <li>• Self-harm or dangerous behaviors</li>
-                      </ul>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm">🚫 Off-Topic Content</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      <ul className="space-y-1 text-xs">
-                        <li>• Political campaigning or partisan content</li>
-                        <li>• Personal medical or legal advice</li>
-                        <li>• Religious proselytizing</li>
-                        <li>• Non-educational personal issues</li>
-                      </ul>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
+              <p className="text-muted-foreground">
+                Academic dishonesty is strictly prohibited, including plagiarism, cheating, sharing assessment answers, or helping others circumvent academic integrity policies. Harassment, discrimination, and hate speech have no place in our community, including targeted attacks, threats, doxxing, or content promoting discrimination based on identity or protected characteristics.
+              </p>
+              <p className="text-muted-foreground">
+                Spam and commercial exploitation undermine our educational focus. This includes excessive self-promotion, affiliate marketing disguised as educational content, selling services through private messages, or repetitive posting. Misinformation and deliberately false content damage trust, including conspiracy theories, pseudoscience presented as fact, or intentionally misleading educational information.
+              </p>
+              <p className="text-muted-foreground">
+                Disruptive behavior that interferes with learning is not tolerated, including trolling, derailing conversations, excessive arguing, or consistently off-topic posting. Content violating laws or causing harm is forbidden, such as sharing copyrighted materials without permission, instructions for dangerous activities, or content that puts individuals at risk.
+              </p>
             </div>
           </Section>
 
-          {/* Moderation Process */}
-          <Section id="moderation" title="Community Moderation & Enforcement">
+          {/* Moderation */}
+          <Section id="moderation" title="Community Moderation & Enforcement" className="scroll-mt-28">
             <div className="space-y-6">
               <p className="text-muted-foreground">
-                We use a balanced approach combining automated detection with human review to maintain community standards while respecting diverse perspectives.
+                We blend automated detection with expert human review to uphold standards fairly. Our approach recognizes that context matters significantly in determining violations. Automated systems identify potential issues quickly, while human moderators make final decisions on complex cases requiring nuanced judgment and community understanding.
+              </p>
+              <p className="text-muted-foreground">
+                Our enforcement philosophy emphasizes education over punishment. For first-time or minor violations, we provide warnings with clear explanations and improvement guidance. Progressive enforcement escalates consequences for repeated violations, from informal warnings to temporary restrictions to permanent bans, though severe violations may result in immediate suspension.
+              </p>
+              <p className="text-muted-foreground">
+                We maintain transparency while respecting privacy, offering structured appeal processes and regular guideline reviews based on community feedback. Our moderation team includes trained staff and experienced volunteers who understand our educational mission, with clear reporting channels and prompt, confidential handling of violations.
               </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base">🤖 Automated Systems</CardTitle>
-                    <CardDescription>Technology-assisted community protection</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div>
-                      <h5 className="font-medium text-sm mb-2">Detection Capabilities:</h5>
-                      <ul className="space-y-1 text-sm ml-4">
-                        <li>• Spam and duplicate content identification</li>
-                        <li>• Hate speech and harassment detection</li>
-                        <li>• Personal information (PII) scanning</li>
-                        <li>• Copyright violation alerts</li>
-                        <li>• Suspicious link and malware checking</li>
-                      </ul>
-                    </div>
-                    <div className="text-xs text-muted-foreground p-2 bg-blue-50 dark:bg-blue-950 rounded">
-                      <strong>Human Oversight:</strong> All automated actions are reviewed by human moderators to ensure fairness and context.
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base">👥 Human Review</CardTitle>
-                    <CardDescription>Expert moderators with educational backgrounds</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div>
-                      <h5 className="font-medium text-sm mb-2">Review Process:</h5>
-                      <ul className="space-y-1 text-sm ml-4">
-                        <li>• Context-aware decision making</li>
-                        <li>• Educational expertise in assessments</li>
-                        <li>• Cultural sensitivity considerations</li>
-                        <li>• Escalation to senior moderators for complex cases</li>
-                        <li>• Regular training on community standards</li>
-                      </ul>
-                    </div>
-                    <div className="text-xs text-muted-foreground p-2 bg-green-50 dark:bg-green-950 rounded">
-                      <strong>Response Time:</strong> Most reports are reviewed within 24 hours, with urgent safety issues addressed immediately.
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
+              {/* ===== Progressive Enforcement Actions (FIXED TEXT) ===== */}
               <div>
                 <h4 className="font-semibold mb-3">Progressive Enforcement Actions</h4>
-                <div className="space-y-3">
-                  <Card>
-                    <CardContent className="pt-4">
-                      <div className="flex items-start gap-3">
-                        <Badge variant="outline" className="mt-0.5">Step 1</Badge>
-                        <div>
-                          <h5 className="font-medium text-sm mb-1">Educational Warning</h5>
-                          <p className="text-xs text-muted-foreground">
-                            First-time violations receive a friendly reminder about community guidelines with explanation of the issue and guidance for improvement.
-                          </p>
-                        </div>
-                      </div>
+                <div className="grid grid-cols-4 gap-3">
+                  <Card className="rounded-2xl">
+                    <CardContent className="p-2">
+                      <Badge variant="outline" className="mb-1">Step 1</Badge>
+                      <h5 className="font-medium text-sm">Educational Warning</h5>
+                      <p className="text-xs text-muted-foreground">
+                        First-time violations receive a friendly reminder with guidance.
+                      </p>
                     </CardContent>
                   </Card>
 
-                  <Card>
-                    <CardContent className="pt-4">
-                      <div className="flex items-start gap-3">
-                        <Badge variant="secondary" className="mt-0.5">Step 2</Badge>
-                        <div>
-                          <h5 className="font-medium text-sm mb-1">Content Removal & Warning</h5>
-                          <p className="text-xs text-muted-foreground">
-                            Repeated violations result in content removal and formal warning. User maintains full community access with additional monitoring.
-                          </p>
-                        </div>
-                      </div>
+                  <Card className="rounded-2xl">
+                    <CardContent className="p-2">
+                      <Badge variant="secondary" className="mb-1">Step 2</Badge>
+                      <h5 className="font-medium text-sm">Content Removal &amp; Warning</h5>
+                      <p className="text-xs text-muted-foreground">
+                        Content removal and formal warning with monitoring.
+                      </p>
                     </CardContent>
                   </Card>
 
-                  <Card>
-                    <CardContent className="pt-4">
-                      <div className="flex items-start gap-3">
-                        <Badge variant="destructive" className="mt-0.5">Step 3</Badge>
-                        <div>
-                          <h5 className="font-medium text-sm mb-1">Temporary Suspension</h5>
-                          <p className="text-xs text-muted-foreground">
-                            Serious or repeated violations result in 1-30 day suspensions with specific conditions for account reinstatement and community re-entry.
-                          </p>
-                        </div>
-                      </div>
+                  <Card className="rounded-2xl">
+                    <CardContent className="p-2">
+                      <Badge variant="destructive" className="mb-1">Step 3</Badge>
+                      <h5 className="font-medium text-sm">Temporary Suspension</h5>
+                      <p className="text-xs text-muted-foreground">
+                        1–30 day suspensions with reinstatement conditions.
+                      </p>
                     </CardContent>
                   </Card>
 
-                  <Card>
-                    <CardContent className="pt-4">
-                      <div className="flex items-start gap-3">
-                        <Badge variant="destructive" className="mt-0.5">Final</Badge>
-                        <div>
-                          <h5 className="font-medium text-sm mb-1">Account Termination</h5>
-                          <p className="text-xs text-muted-foreground">
-                            Severe violations (harassment, safety threats, repeated serious violations) result in permanent account termination and community ban.
-                          </p>
-                        </div>
-                      </div>
+                  <Card className="rounded-2xl">
+                    <CardContent className="p-2">
+                      <Badge variant="destructive" className="mb-1">Final</Badge>
+                      <h5 className="font-medium text-sm">Account Termination</h5>
+                      <p className="text-xs text-muted-foreground">
+                        Permanent termination for severe violations.
+                      </p>
                     </CardContent>
                   </Card>
                 </div>
@@ -516,253 +314,129 @@ export default function Page() {
             </div>
           </Section>
 
-          {/* Reporting and Appeals */}
-          <Section id="reporting" title="Reporting Violations & Appeals Process">
+          {/* Reporting */}
+          <Section id="reporting" title="Reporting Violations & Appeals" className="scroll-mt-28">
             <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base">
-                      <Flag className="h-4 w-4" />
-                      How to Report Violations
-                    </CardTitle>
-                    <CardDescription>Multiple ways to flag concerning content or behavior</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div>
-                      <h5 className="font-medium text-sm mb-2">Reporting Methods:</h5>
-                      <ul className="space-y-1 text-sm ml-4">
-                        <li>• <strong>In-platform:</strong> Use the ••• menu on any post or comment</li>
-                        <li>• <strong>Direct email:</strong> <Link href="mailto:safety@erudyte.com" className="text-primary">safety@erudyte.com</Link> for detailed reports</li>
-                        <li>• <strong>Anonymous form:</strong> Available for sensitive situations</li>
-                        <li>• <strong>Emergency line:</strong> Immediate safety concerns get priority</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h5 className="font-medium text-sm mb-2">What to Include:</h5>
-                      <ul className="space-y-1 text-sm ml-4">
-                        <li>• Specific content or behavior in question</li>
-                        <li>• Why it violates community guidelines</li>
-                        <li>• Screenshots or links when helpful</li>
-                        <li>• Any additional context or concerns</li>
-                      </ul>
-                    </div>
-                    <Button size="sm" variant="outline" className="mt-3">
-                      Report a Violation
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base">
-                      <Eye className="h-4 w-4" />
-                      Appeals Process
-                    </CardTitle>
-                    <CardDescription>Challenging moderation decisions fairly</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div>
-                      <h5 className="font-medium text-sm mb-2">Appeal Timeline:</h5>
-                      <ul className="space-y-1 text-sm ml-4">
-                        <li>• <strong>14 days:</strong> Window to submit appeals</li>
-                        <li>• <strong>5 business days:</strong> Initial review and response</li>
-                        <li>• <strong>Escalation:</strong> Senior review for complex cases</li>
-                        <li>• <strong>Final decision:</strong> Binding resolution within 10 days</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <ul className="space-y-1 text-sm ml-4">
-                        <li>• Clear explanation of why you believe the decision was incorrect</li>
-                        <li>• Additional context or evidence supporting your case</li>
-                        <li>• Acknowledgment of community guidelines and commitment to follow them</li>
-                        <li>• Professional, respectful tone in all communications</li>
-                      </ul>
-                    </div>
-                    <Button size="sm" variant="outline" className="mt-3">
-                      Submit Appeal
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <Alert>
-                <Shield className="h-4 w-4" />
-                <AlertTitle>Fair Process Guarantee</AlertTitle>
-                <AlertDescription>
-                  Every report is investigated thoroughly, and every user has the right to appeal moderation decisions. We're committed to transparent, consistent enforcement that protects our community while respecting individual rights.
-                </AlertDescription>
-              </Alert>
+              <p className="text-muted-foreground">
+                We provide multiple accessible ways to report violations and ensure every community member can seek help when needed. Reports can be submitted through in-platform reporting buttons on posts and comments, direct messages to moderators, or our dedicated violation reporting form. All reports are handled confidentially, and we never reveal the identity of reporters to protect those who come forward with concerns.
+              </p>
+              <p className="text-muted-foreground">
+                Our appeal process ensures fair review of moderation decisions through multiple layers of oversight. Appeals must be submitted within 30 days of the initial decision and include specific reasons why the action should be reconsidered. A different moderator team reviews each appeal, considering new evidence, context that may have been missed, and whether the original decision aligned with our guidelines and community standards.
+              </p>
+              <p className="text-muted-foreground">
+                We're committed to continuous improvement in our reporting and appeals systems based on community feedback and case outcomes. Regular training ensures our moderation team stays current with best practices, while quarterly reviews of appealed cases help us identify areas for improvement. We also maintain detailed documentation of decisions to ensure consistency and provide transparency in our enforcement approach while protecting individual privacy.
+              </p>
             </div>
           </Section>
 
           {/* Updates */}
-          <Section id="updates" title="Updates to Community Guidelines" badge="Living Document">
+          <Section id="updates" title="Updates to Community Guidelines" badge="Living Document" className="scroll-mt-28">
             <div className="space-y-6">
               <p className="text-muted-foreground">
-                Our community guidelines evolve as we learn from our community and adapt to new challenges. We're committed to transparency in how these rules change.
+                Our community guidelines are a living document that evolves as we learn from our community and adapt to new challenges. We regularly review and update these guidelines based on community feedback, emerging issues, and lessons learned from moderation experiences. Major changes are announced to the community with advance notice, while minor clarifications may be implemented more quickly to address immediate concerns or ambiguities.
               </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm">📝 Update Process</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <ul className="space-y-1 text-xs">
-                      <li>• <strong>Community input:</strong> Feedback drives guideline improvements</li>
-                      <li>• <strong>Regular review:</strong> Quarterly assessment of effectiveness</li>
-                      <li>• <strong>Expert consultation:</strong> Educational professionals advise on changes</li>
-                      <li>• <strong>Transparency:</strong> Clear communication about all modifications</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm">📢 Change Notifications</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <ul className="space-y-1 text-xs">
-                      <li>• <strong>Major changes:</strong> 30-day advance notice via email</li>
-                      <li>• <strong>Minor updates:</strong> In-platform announcements</li>
-                      <li>• <strong>Emergency changes:</strong> Immediate notification for safety issues</li>
-                      <li>• <strong>Version history:</strong> Complete changelog available</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <Alert>
-                <MessageSquare className="h-4 w-4" />
-                <AlertTitle>Community Feedback</AlertTitle>
-                <AlertDescription>
-                  We periodically revise these guidelines based on community needs and best practices. Material changes are announced in-product and via email. Share your feedback at community@erudyte.com.
-                </AlertDescription>
-              </Alert>
+              <p className="text-muted-foreground">
+                We believe in transparent communication about guideline changes and actively seek input from our community members before implementing significant updates. When updates occur, we provide clear explanations of what changed, why the change was necessary, and how it affects community members. All community members are notified of guideline updates through platform announcements, and we maintain a changelog documenting the evolution of our policies to ensure everyone can stay informed about current expectations and standards.
+              </p>
             </div>
           </Section>
 
           {/* FAQ */}
-          <Section id="faq" title="Community Guidelines FAQ" className="[&>div>h2]:text-lg">
+          <Section id="faq" title="Community Guidelines FAQ" className="scroll-mt-28 [&>div>h2]:text-lg">
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="faq-1">
-                <AccordionTrigger className="text-xs">What if I accidentally share student information?</AccordionTrigger>
+                <AccordionTrigger className="text-sm py-3">What if I accidentally share student information?</AccordionTrigger>
                 <AccordionContent>
-                  <div className="space-y-3 text-sm">
-                    <p>If you accidentally post student information:</p>
-                    <ul className="space-y-1 ml-4">
-                      <li>• <strong>Immediately delete</strong> the post or edit to remove identifying details</li>
-                      <li>• <strong>Contact moderators</strong> at safety@erudyte.com to ensure complete removal</li>
-                      <li>• <strong>No penalties</strong> for honest mistakes that are quickly corrected</li>
-                      <li>• <strong>Learning opportunity</strong> — we'll provide guidance to prevent future incidents</li>
-                    </ul>
-                    <p className="text-xs text-muted-foreground">We understand that sharing educational experiences sometimes involves sensitive information. When in doubt, anonymize all details or ask for guidance before posting.</p>
-                  </div>
+                  <p className="text-sm">If you accidentally post student information, immediately delete the post and contact moderators at safety@erudyte.com. We understand these mistakes happen and will help you resolve the situation quickly while ensuring student privacy is protected.</p>
                 </AccordionContent>
               </AccordionItem>
-
               <AccordionItem value="faq-2">
-                <AccordionTrigger className="text-xs">Can I share my own educational resources and materials?</AccordionTrigger>
+                <AccordionTrigger className="text-sm py-3">Can I share homework help or study materials?</AccordionTrigger>
                 <AccordionContent>
-                  <div className="space-y-3 text-sm">
-                    <p>Absolutely! We encourage sharing original educational content:</p>
-                    <ul className="space-y-1 ml-4">
-                      <li>• <strong>Original materials:</strong> Lesson plans, worksheets, rubrics you created</li>
-                      <li>• <strong>Proper attribution:</strong> Credit any sources or inspirations</li>
-                      <li>• <strong>Usage rights:</strong> Specify how others can use your materials</li>
-                      <li>• <strong>No commercial promotion:</strong> Focus on educational value, not sales</li>
-                    </ul>
-                    <p>For paid resources, you can mention availability but detailed promotion should be in designated partner spaces.</p>
-                  </div>
+                  <p className="text-sm">You can share general study strategies, resources, and explanations of concepts, but cannot share specific homework answers, solutions to assignments, or materials that would compromise academic integrity. When in doubt, focus on teaching the process rather than providing direct answers.</p>
                 </AccordionContent>
               </AccordionItem>
-
               <AccordionItem value="faq-3">
-                <AccordionTrigger className="text-xs">How do you handle disagreements about educational approaches?</AccordionTrigger>
+                <AccordionTrigger className="text-sm py-3">What counts as spam or self-promotion?</AccordionTrigger>
                 <AccordionContent>
-                  <div className="space-y-3 text-sm">
-                    <p>We welcome diverse educational perspectives and healthy debate:</p>
-                    <ul className="space-y-1 ml-4">
-                      <li>• <strong>Respectful disagreement:</strong> Challenge ideas, not people</li>
-                      <li>• <strong>Evidence-based discussion:</strong> Support positions with research or experience</li>
-                      <li>• <strong>Multiple approaches:</strong> Recognize that different methods work for different contexts</li>
-                      <li>• <strong>Learning mindset:</strong> Be open to changing your perspective</li>
-                    </ul>
-                    <p className="text-xs text-muted-foreground">Our moderation team includes educators who understand that pedagogical debates are healthy when conducted professionally.</p>
-                  </div>
+                  <p className="text-sm">Excessive posting of personal content, repeated links to external sites, unsolicited advertising, or promoting services for profit are considered spam. Sharing relevant professional experiences or educational resources occasionally is welcome, but our platform should not be used primarily for commercial purposes.</p>
                 </AccordionContent>
               </AccordionItem>
-
               <AccordionItem value="faq-4">
-                <AccordionTrigger className="text-xs">What happens if I'm falsely reported?</AccordionTrigger>
+                <AccordionTrigger className="text-sm py-3">How do I report harassment or inappropriate behavior?</AccordionTrigger>
                 <AccordionContent>
-                  <div className="space-y-3 text-sm">
-                    <p>We take false reporting seriously and have protections in place:</p>
-                    <ul className="space-y-1 ml-4">
-                      <li>• <strong>Human review:</strong> All reports are evaluated by trained moderators</li>
-                      <li>• <strong>Context consideration:</strong> We examine the full conversation and intent</li>
-                      <li>• <strong>Appeal process:</strong> You can challenge any moderation decision</li>
-                      <li>• <strong>Pattern detection:</strong> Repeated false reporting is itself a violation</li>
-                    </ul>
-                    <p>If you believe you've been falsely reported, use our appeals process to provide additional context. We'll review the decision thoroughly.</p>
-                  </div>
+                  <p className="text-sm">Use the report button on any post or comment, send a direct message to moderators, or email safety@erudyte.com with details. Include screenshots if possible and describe the specific behavior that concerns you. All reports are confidential and reviewed promptly.</p>
                 </AccordionContent>
               </AccordionItem>
-
               <AccordionItem value="faq-5">
-                <AccordionTrigger className="text-xs">Can I discuss controversial educational topics?</AccordionTrigger>
+                <AccordionTrigger className="text-sm py-3">What if I disagree with a moderation decision?</AccordionTrigger>
                 <AccordionContent>
-                  <div className="space-y-3 text-sm">
-                    <p>Yes, but with care and professionalism:</p>
-                    <ul className="space-y-1 ml-4">
-                      <li>• <strong>Educational focus:</strong> Frame discussions around pedagogical implications</li>
-                      <li>• <strong>Multiple perspectives:</strong> Acknowledge different viewpoints and contexts</li>
-                      <li>• <strong>Professional tone:</strong> Maintain respectful, academic discourse</li>
-                      <li>• <strong>Student-centered:</strong> Consider impact on student learning and well-being</li>
-                    </ul>
-                    <p className="text-xs text-muted-foreground">Topics like curriculum standards, assessment methods, and teaching controversial subjects are welcome when approached professionally.</p>
-                  </div>
+                  <p className="text-sm">You can appeal any moderation decision within 30 days by contacting appeals@erudyte.com with your username, the specific decision you're appealing, and why you believe it should be reconsidered. A different moderation team will review your case with fresh eyes.</p>
                 </AccordionContent>
               </AccordionItem>
-
               <AccordionItem value="faq-6">
-                <AccordionTrigger className="text-xs">How do I know if AI-generated content needs to be disclosed?</AccordionTrigger>
+                <AccordionTrigger className="text-sm py-3">Can I discuss controversial or sensitive topics?</AccordionTrigger>
                 <AccordionContent>
-                  <div className="space-y-3 text-sm">
-                    <p>Transparency about AI assistance is required:</p>
-                    <ul className="space-y-1 ml-4">
-                      <li>• <strong>Direct AI output:</strong> Must be clearly labeled as AI-generated</li>
-                      <li>• <strong>AI-assisted work:</strong> Disclose when AI tools helped with creation or editing</li>
-                      <li>• <strong>Research help:</strong> Mention if AI was used for brainstorming or research</li>
-                      <li>• <strong>Personal experience:</strong> Don't present AI content as your own classroom experience</li>
-                    </ul>
-                    <p>When in doubt, err on the side of disclosure. Our community values authenticity and honesty about content origins.</p>
-                  </div>
+                  <p className="text-sm">Educational discussions of complex topics are encouraged when approached respectfully and factually. Focus on learning outcomes, cite reliable sources, and maintain a constructive tone. Avoid inflammatory language or content that targets specific individuals or groups.</p>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="faq-7">
+                <AccordionTrigger className="text-sm py-3">What happens to my content if my account is suspended?</AccordionTrigger>
+                <AccordionContent>
+                  <p className="text-sm">Your posts and comments remain visible during temporary suspensions but you cannot create new content. For permanent bans, we may remove your content depending on the violation severity. You can request content removal at any time by contacting data@erudyte.com.</p>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="faq-8">
+                <AccordionTrigger className="text-sm py-3">How do I know if content violates copyright?</AccordionTrigger>
+                <AccordionContent>
+                  <p className="text-sm">Don't share full text from books, articles, or other copyrighted materials without permission. Brief quotes with proper attribution for educational discussion are generally acceptable. When sharing resources, link to original sources rather than copying content directly.</p>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="faq-9">
+                <AccordionTrigger className="text-sm py-3">Can I create multiple accounts?</AccordionTrigger>
+                <AccordionContent>
+                  <p className="text-sm">Each person should maintain only one account to ensure authentic community interactions. Creating additional accounts to circumvent restrictions, vote manipulate, or evade bans violates our guidelines and may result in permanent suspension of all associated accounts.</p>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="faq-10">
+                <AccordionTrigger className="text-sm py-3">What if I'm unsure whether my post follows the guidelines?</AccordionTrigger>
+                <AccordionContent>
+                  <p className="text-sm">When in doubt, err on the side of caution or reach out to moderators at guidelines@erudyte.com before posting. We're happy to review content or answer questions about our policies. It's always better to ask first than to deal with violations after the fact.</p>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
           </Section>
 
-          {/* Footer */}
-          <div className="mt-12 p-6 bg-muted rounded-lg">
+          {/* Footer (pill links, no underline/blue) */}
+          <div className="mt-12 p-6 bg-muted rounded-2xl no-underline">
             <div className="flex items-start gap-4">
-              <Users className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+              <Users className="h-6 w-6 text-emerald-600 flex-shrink-0 mt-1" />
               <div>
                 <h3 className="font-semibold mb-2">Building Our Community Together</h3>
                 <p className="text-sm text-muted-foreground mb-3">
-                  These guidelines are more than rules — they're our shared commitment to creating an environment where educators can learn, grow, and support each other. By following these principles, you help build a community that advances educational excellence and promotes the well-being of educators and students worldwide.
+                  These guidelines are our shared commitment to a thriving learning community.
                 </p>
                 <div className="flex flex-wrap gap-4 text-sm">
                   <span><strong>Last Updated:</strong> August 27, 2025</span>
                   <span><strong>Version:</strong> 2.1</span>
                   <span><strong>Next Review:</strong> November 27, 2025</span>
                 </div>
-                <div className="flex gap-4 mt-3">
-                  <Link href="/legal/terms" className="text-primary hover:underline text-sm">Terms of Service</Link>
-                  <Link href="/legal/privacy" className="text-primary hover:underline text-sm">Privacy Policy</Link>
-                  <Link href="/legal/accessibility" className="text-primary hover:underline text-sm">Accessibility Statement</Link>
-                  <Link href="mailto:community@erudyte.com" className="text-primary hover:underline text-sm">Community Feedback</Link>
+
+                <div className="flex gap-3 mt-4 flex-wrap">
+                  {[
+                    { href: "/legal/terms", label: "Terms of Service" },
+                    { href: "/legal/privacy", label: "Privacy Policy" },
+                    { href: "/legal/accessibility", label: "Accessibility" },
+                    { href: "mailto:community@erudyte.com", label: "Community Feedback" },
+                  ].map((l) => (
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      className="text-[13px] text-zinc-800 dark:text-zinc-200 px-2 py-1 rounded-md ring-1 ring-zinc-300/60 dark:ring-zinc-700/60 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+                    >
+                      {l.label}
+                    </Link>
+                  ))}
                 </div>
               </div>
             </div>

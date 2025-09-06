@@ -45,41 +45,9 @@ export default function PageShell({
         </div>
       </section>
 
-      {/* Body + sticky TOC */}
+      {/* Body */}
       <section className="container mx-auto px-4 py-8 md:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Main */}
-          <div className="lg:col-span-8 space-y-10">{children}</div>
-
-          {/* Sidebar */}
-          <aside className="lg:col-span-4">
-            <Card className="sticky top-24">
-              <CardHeader>
-                <CardTitle className="text-base">On this page</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 text-sm">
-                <nav className="space-y-2" id="toc" />
-                <Separator className="my-4" />
-                <div className="space-y-3">
-                  <div className="text-xs text-muted-foreground">Quick actions</div>
-                  <div className="flex flex-wrap gap-2">
-                    <Button variant="secondary" size="sm" onClick={() => window.print()}>
-                      <Printer className="h-4 w-4 mr-2" /> Print
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Download className="h-4 w-4 mr-2" /> Download PDF
-                    </Button>
-                    <Button asChild size="sm">
-                      <Link href="/contact">
-                        <Mail className="h-4 w-4 mr-2" /> Contact us
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </aside>
-        </div>
+        <div className="space-y-10">{children}</div>
       </section>
     </div>
   )

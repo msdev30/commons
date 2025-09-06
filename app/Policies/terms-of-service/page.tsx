@@ -80,8 +80,8 @@ function StickyTOC() {
           <a
             key={t.id}
             href={`#${t.id}`}
-            className={`group flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] transition-colors ${
-              active === t.id ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"
+            className={`group flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] transition-colors no-underline ${
+              active === t.id ? "bg-primary/10 text-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"
             }`}
           >
             <ChevronRight className={`h-3.5 w-3.5 transition-transform ${active === t.id ? "translate-x-0.5" : "-translate-x-0.5"}`} />
@@ -96,9 +96,9 @@ function StickyTOC() {
             <CardDescription className="text-xs">Jump to common topics</CardDescription>
           </CardHeader>
           <CardContent className="text-sm space-y-2">
-            <Link className="block hover:underline" href="#payment">Billing & Refunds</Link>
-            <Link className="block hover:underline" href="#disputes">Arbitration</Link>
-            <Link className="block hover:underline" href="#intellectual-property">DMCA</Link>
+            <Link className="block text-foreground no-underline hover:text-muted-foreground" href="#payment">Billing & Refunds</Link>
+            <Link className="block text-foreground no-underline hover:text-muted-foreground" href="#disputes">Arbitration</Link>
+            <Link className="block text-foreground no-underline hover:text-muted-foreground" href="#intellectual-property">DMCA</Link>
           </CardContent>
         </Card>
       </div>
@@ -130,13 +130,25 @@ export default function Page() {
           <StickyTOC />
 
           <main className="min-w-0 flex-1">
-            <PageShell
-              icon={<FileText className="h-6 w-6" />}
-              title="Terms of Service"
-              subtitle="The legal agreement governing your use of Erudyte's educational platform, services, and community features."
-              lastUpdated={meta.lastUpdated}
-              version={meta.version}
-            >
+            {/* Hero Section */}
+            <div className="mb-8">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
+                  <FileText className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold tracking-tight">Terms of Service</h1>
+                  <p className="text-muted-foreground">The legal agreement governing your use of Erudyte's educational platform, services, and community features.</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <span>Last updated: {meta.lastUpdated}</span>
+                <span>•</span>
+                <span>Version {meta.version}</span>
+              </div>
+            </div>
+
+            <div className="space-y-12">
               {/* Overview / Snapshot */}
               <div id="overview" className="scroll-mt-32">
                 <Alert className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
@@ -856,7 +868,7 @@ export default function Page() {
                   </div>
                 </div>
               </div>
-            </PageShell>
+            </div>
           </main>
         </div>
       </div>

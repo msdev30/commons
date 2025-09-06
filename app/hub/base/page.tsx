@@ -25,6 +25,7 @@ export default function BasePage() {
                 <p className="text-gray-600 dark:text-gray-300">Manage your educational community and resources</p>
               </div>
 
+              {/* Quick Actions */}
               <Card className="p-6 mb-8">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -50,21 +51,87 @@ export default function BasePage() {
                 </div>
               </Card>
 
-              <Card className="p-6">
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Recent Activity</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                    <Icon.Users className="h-5 w-5 text-blue-500" />
-                    <div>
-                      <p className="font-medium text-gray-900 dark:text-white">New member joined STEM Teachers Network</p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">2 hours ago</p>
+              {/* Navigation Tabs */}
+              <div className="flex items-center gap-2 mb-6">
+                <button className="px-6 py-3 bg-white/90 text-gray-900 rounded-2xl font-semibold shadow-lg">
+                  Dashboard
+                </button>
+                <button className="px-6 py-3 text-gray-600 hover:bg-white/50 rounded-2xl font-semibold transition-all duration-200">
+                  Resources
+                </button>
+                <button className="px-6 py-3 text-gray-600 hover:bg-white/50 rounded-2xl font-semibold transition-all duration-200">
+                  Grants
+                </button>
+                <button className="px-6 py-3 text-gray-600 hover:bg-white/50 rounded-2xl font-semibold transition-all duration-200">
+                  Connections
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Recent Activity */}
+                <Card className="p-6">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Recent Activity</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                      <Icon.Users className="h-5 w-5 text-blue-500" />
+                      <div>
+                        <p className="font-medium text-gray-900 dark:text-white">New member joined STEM Teachers Network</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">2 hours ago</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                      <Icon.Award className="h-5 w-5 text-green-500" />
+                      <div>
+                        <p className="font-medium text-gray-900 dark:text-white">New grant opportunity available</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">5 hours ago</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                    <Icon.Award className="h-5 w-5 text-green-500" />
-                    <div>
-                      <p className="font-medium text-gray-900 dark:text-white">New grant opportunity available</p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">5 hours ago</p>
+                </Card>
+
+                {/* Shared Resources */}
+                <Card className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">Shared Resources</h3>
+                    <button className="text-sm text-purple-600 hover:text-purple-700 font-medium">
+                      Add Resource
+                    </button>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                      <div className="flex items-start gap-3">
+                        <Icon.Database className="h-5 w-5 text-blue-500 mt-0.5" />
+                        <div className="flex-1">
+                          <h4 className="font-medium text-gray-900 dark:text-white">STEM Education Grant Database</h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Comprehensive database of STEM education funding opportunities</p>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">STEMGrants</span>
+                            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Education</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Grant Opportunities */}
+              <Card className="p-6 mt-8">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Grant Opportunities</h3>
+                <div className="space-y-4">
+                  <div className="p-4 border border-gray-200 dark:border-gray-600 rounded-lg">
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <h4 className="font-semibold text-gray-900 dark:text-white">NSF Education Innovation Grant</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">Supporting innovative STEM education programs</p>
+                      </div>
+                      <button className="text-sm bg-purple-100 text-purple-700 px-3 py-1 rounded-full hover:bg-purple-200 transition-colors">
+                        Set Reminder
+                      </button>
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                      <span className="font-medium text-green-600">$50,000 - $200,000</span>
+                      <span>Due: 2024-03-15</span>
                     </div>
                   </div>
                 </div>

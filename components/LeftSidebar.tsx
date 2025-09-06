@@ -118,11 +118,11 @@ const LeftSidebar: React.FC = () => {
           {/* MENU */}
           <SectionTitle isCollapsed={collapsed.menu} onToggle={() => setCollapsed(prev => ({...prev, menu: !prev.menu}))}>Menu</SectionTitle>
           {!collapsed.menu && <div className="space-y-1 px-2 pb-2">
-            <Item icon={<Icon.Home className="h-4 w-4" />} label="Lounge" active={activeKey === "lounge"} />
+            <Item icon={<Icon.Home className="h-4 w-4" />} label="Lounge" active={activeKey === "lounge"} onClick={() => window.location.href = '/'} />
             <Item icon={<Icon.Pen className="h-4 w-4" />} label="Base" active={activeKey === "base"} onClick={() => window.location.href = '/hub'} />
-            <Item icon={<Icon.Flame className="h-4 w-4" />} label="Trending" active={activeKey === "trending"} />
-            <Item icon={<Icon.Compass className="h-4 w-4" />} label="Explore" active={activeKey === "explore"} />
-            <Item icon={<Icon.Hash className="h-4 w-4" />} label="All" active={activeKey === "all"} />
+            <Item icon={<Icon.Flame className="h-4 w-4" />} label="Trending" active={activeKey === "trending"} onClick={() => window.location.href = '/trending'} />
+            <Item icon={<Icon.Compass className="h-4 w-4" />} label="Explore" active={activeKey === "explore"} onClick={() => window.location.href = '/explore'} />
+            <Item icon={<Icon.Hash className="h-4 w-4" />} label="All" active={activeKey === "all"} onClick={() => window.location.href = '/all'} />
           </div>}
 
           {/* RECENT */}

@@ -1,7 +1,6 @@
 "use client"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
-import PageShell from "@/components/policy/PageShell"
 import Section from "@/components/policy/Section"
 import Navigation from "@/components/Navigation"
 import {
@@ -67,6 +66,37 @@ function useActiveSection(ids: string[]) {
   return active
 }
 
+function ScrollRail() {
+  const active = useActiveSection(sections.map((s) => s.id))
+  return (
+    <div className="hidden xl:block fixed right-6 top-32 z-30">
+      <nav aria-label="Section progress" className="flex flex-col gap-3 items-center">
+        {sections.map((s) => {
+          const isActive = active === s.id
+          return (
+            <a
+              key={s.id}
+              href={`#${s.id}`}
+              className={[
+                "group relative flex h-3.5 w-3.5 items-center justify-center rounded-full transition-all",
+                "ring-1 ring-zinc-300 dark:ring-zinc-700",
+                isActive
+                  ? "scale-110 bg-emerald-500/90 ring-emerald-400 dark:ring-emerald-500"
+                  : "bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600"
+              ].join(" ")}
+            >
+              <span className="pointer-events-none absolute -left-2 -right-2 -top-2 -bottom-2" />
+              <span className="absolute left-5 top-1/2 -translate-y-1/2 whitespace-nowrap text-xs text-muted-foreground opacity-0 translate-x-[-6px] transition-all group-hover:opacity-100 group-hover:translate-x-0">
+                {s.label}
+              </span>
+            </a>
+          )
+        })}
+      </nav>
+    </div>
+  )
+}
+
 function FloatingActions() {
   const onPrint = () => {
     if (typeof window !== "undefined") window.print()
@@ -117,18 +147,28 @@ export default function Page() {
   return (
     <>
       <Navigation />
-      <div className="pb-40">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 pt-4 lg:grid-cols-[1fr_minmax(0,740px)_1fr] lg:px-8">
-          {/* left gutter */}
-          <div className="hidden lg:block" />
+      <div className="pb-40 relative">
+        <ScrollRail />
+        <div className="mx-auto max-w-4xl px-4 pt-4 lg:px-8">
+          {/* Hero Section */}
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
+                <Shield className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold tracking-tight">Privacy Policy</h1>
+                <p className="text-muted-foreground">How we collect, use, protect, and manage your personal information across Erudyte's educational platform and services.</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <span>Last updated: Aug 27, 2025</span>
+              <span>•</span>
+              <span>Version 1.9</span>
+            </div>
+          </div>
 
-          <PageShell
-            icon={<Shield className="h-6 w-6" />}
-            title="Privacy Policy"
-            subtitle="How we collect, use, protect, and manage your personal information across Erudyte's educational platform and services."
-            lastUpdated="Aug 27, 2025"
-            version="1.9"
-          >
+          <div className="space-y-12">
             {/* Floating actions */}
             <FloatingActions />
 
@@ -978,10 +1018,7 @@ export default function Page() {
                 </div>
               </div>
             </div>
-          </PageShell>
-
-          {/* Right Rail: Sticky TOC */}
-          <StickyTOC />
+          </div>
         </div>
       </div>
 
