@@ -91,10 +91,19 @@ const HubPill: React.FC<{ name: string; icon?: React.ReactNode; active?: boolean
 )
 
 /* ============ component ============ */
-const LeftSidebar: React.FC = () => {
+export type MenuKey = "lounge" | "base" | "trending" | "explore" | "all"
+
+export interface LeftSidebarProps {
+  activeKey?: MenuKey
+  onNavigate?: (key: MenuKey) => void
+  onCreateHub?: () => void
+  onManageHub?: () => void
+}
+
+const LeftSidebar: React.FC<LeftSidebarProps> = ({ activeKey = "lounge", onNavigate, onCreateHub, onManageHub }) => {
   // if you want to control which menu item is active from page state,
   // pass a prop and use it here. For now, “Trending” is demo-active.
-  const [activeKey] = React.useState<"home" | "trending" | "explore" | "all">("home")
+
   const [collapsed, setCollapsed] = React.useState({
     menu: false,
     recent: false,
@@ -118,10 +127,11 @@ const LeftSidebar: React.FC = () => {
           {/* MENU */}
           <SectionTitle isCollapsed={collapsed.menu} onToggle={() => setCollapsed(prev => ({...prev, menu: !prev.menu}))}>Menu</SectionTitle>
           {!collapsed.menu && <div className="space-y-1 px-2 pb-2">
-            <Item icon={<Icon.Home className="h-4 w-4" />} label="Home" active={activeKey === "home"} />
-            <Item icon={<Icon.Flame className="h-4 w-4" />} label="Trending" active={activeKey === "trending"} />
-            <Item icon={<Icon.Compass className="h-4 w-4" />} label="Explore" active={activeKey === "explore"} />
-            <Item icon={<Icon.Hash className="h-4 w-4" />} label="All" active={activeKey === "all"} />
+            <Item icon={<Icon.Home className="h-4 w-4" />} label="Lounge" active={activeKey === "lounge"} onClick={() => onNavigate?.("lounge")} />
+            <Item icon={<Icon.Pen className="h-4 w-4" />} label="Base" active={activeKey === "base"} onClick={() => onNavigate?.("base")} />
+            <Item icon={<Icon.Flame className="h-4 w-4" />} label="Trending" active={activeKey === "trending"} onClick={() => onNavigate?.("trending")} />
+            <Item icon={<Icon.Compass className="h-4 w-4" />} label="Explore" active={activeKey === "explore"} onClick={() => onNavigate?.("explore")} />
+            <Item icon={<Icon.Hash className="h-4 w-4" />} label="All" active={activeKey === "all"} onClick={() => onNavigate?.("all")} />
           </div>}
 
           {/* RECENT */}
@@ -140,12 +150,12 @@ const LeftSidebar: React.FC = () => {
             <Item 
               icon={<Icon.PlusCircle className="h-4 w-4" />} 
               label="Create Hub" 
-              onClick={() => window.location.href = '/hub'}
+              onClick={() => onCreateHub?.()}
             />
             <Item 
               icon={<Icon.Settings className="h-4 w-4" />} 
               label="Manage Hub" 
-              onClick={() => window.location.href = '/hub'}
+              onClick={() => onManageHub?.()}
             />
             <div className="pt-1 space-y-1">
               <HubPill name="STEM Teachers Network" isGroup groupColor="from-purple-500 to-pink-500" />
@@ -169,10 +179,10 @@ const LeftSidebar: React.FC = () => {
           {/* POLICIES */}
           <SectionTitle isCollapsed={collapsed.rules} onToggle={() => setCollapsed(prev => ({...prev, rules: !prev.rules}))}>Policies</SectionTitle>
           {!collapsed.rules && <div className="space-y-1 px-2 pb-2">
-            <Item icon={<Icon.Scale className="h-4 w-4" />} label="E-Commons Rules" />
-            <Item icon={<Icon.Gavel className="h-4 w-4" />} label="Privacy Policy" />
-            <Item icon={<Icon.FileText className="h-4 w-4" />} label="User Agreement" />
-            <Item icon={<Icon.Eye className="h-4 w-4" />} label="Accessibility" />
+            <Item icon={<Icon.Scale className="h-4 w-4" />} label="E-Commons Rules" onClick={() => window.location.href = '/Policies/e-commons-rules'} />
+            <Item icon={<Icon.Gavel className="h-4 w-4" />} label="Privacy Policy" onClick={() => window.location.href = '/Policies/privacy-policy'} />
+            <Item icon={<Icon.FileText className="h-4 w-4" />} label="User Agreement" onClick={() => window.location.href = '/Policies/user-agreement'} />
+            <Item icon={<Icon.Eye className="h-4 w-4" />} label="Accessibility" onClick={() => window.location.href = '/Policies/accessibility'} />
           </div>}
         </div>
       </div>

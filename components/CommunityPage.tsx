@@ -4,6 +4,7 @@ import * as React from "react"
 import { Icon } from "@/components/icons"
 import LeftSidebar from "@/components/LeftSidebar"
 import { CommentSection } from "@/components/CommentSection"
+import Navigation from "@/components/Navigation"
 
 /* =========================
    Types
@@ -96,8 +97,8 @@ const Card: React.FC<{ children: React.ReactNode; className?: string; hover?: bo
   hover = false,
 }) => (
   <div
-    className={`bg-white/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl shadow-black/5 ${
-      hover ? "hover:bg-white/90 transition-all duration-200" : ""
+    className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/20 shadow-xl shadow-black/5 ${
+      hover ? "hover:bg-white/90 dark:hover:bg-gray-800/90 transition-all duration-200" : ""
     } ${className}`}
   >
     {children}
@@ -334,7 +335,7 @@ const PostCard: React.FC<{ post: Post; onReact: (postId: string, reaction: React
         <Avatar src={post.author.avatar} alt={post.author.name} size={48} />
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
-            <span className="font-semibold text-gray-900">{post.author.name}</span>
+            <span className="font-semibold text-gray-900 dark:text-white">{post.author.name}</span>
             {post.author.verified && <Icon.Verified className="h-4 w-4 text-blue-500" />}
             {post.group && <span className="text-sm text-gray-500">in</span>}
             {post.group && <Badge variant="info">{post.group.name}</Badge>}
@@ -449,7 +450,7 @@ const PostCard: React.FC<{ post: Post; onReact: (postId: string, reaction: React
             </div>
           </div>
 
-          <p className="text-gray-800 text-lg leading-relaxed mb-4">{post.content}</p>
+          <p className="text-gray-800 dark:text-gray-200 text-lg leading-relaxed mb-4">{post.content}</p>
 
           {post.media?.length ? (
             <div className="mb-4">
@@ -559,20 +560,20 @@ const ProfileCard: React.FC = () => (
   <Card className="p-6 mb-6">
     <div className="text-center">
       <Avatar src={you.avatar} alt={you.name} size={64} className="mx-auto mb-4" />
-      <h3 className="font-bold text-lg text-gray-900">{you.name}</h3>
-      <p className="text-gray-600 mb-2">{you.headline}</p>
+      <h3 className="font-bold text-lg text-gray-900 dark:text-white">{you.name}</h3>
+      <p className="text-gray-600 dark:text-gray-300 mb-2">{you.headline}</p>
       <div className="grid grid-cols-3 gap-4 mb-4">
         <div className="text-center">
-          <div className="text-xl font-bold text-gray-900">248</div>
-          <div className="text-sm text-gray-500">Following</div>
+          <div className="text-xl font-bold text-gray-900 dark:text-white">248</div>
+          <div className="text-sm text-gray-500 dark:text-gray-400">Following</div>
         </div>
         <div className="text-center">
-          <div className="text-xl font-bold text-gray-900">1.2k</div>
-          <div className="text-sm text-gray-500">Followers</div>
+          <div className="text-xl font-bold text-gray-900 dark:text-white">1.2k</div>
+          <div className="text-sm text-gray-500 dark:text-gray-400">Followers</div>
         </div>
         <div className="text-center">
-          <div className="text-xl font-bold text-gray-900">56</div>
-          <div className="text-sm text-gray-500">Posts</div>
+          <div className="text-xl font-bold text-gray-900 dark:text-white">56</div>
+          <div className="text-sm text-gray-500 dark:text-gray-400">Posts</div>
         </div>
       </div>
       <button className="w-full px-4 py-2 bg-gradient-to-r from-purple-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200">
@@ -586,7 +587,7 @@ const TrendingTopics: React.FC = () => (
   <Card className="p-4 mb-6">
     <div className="flex items-center gap-2 mb-3">
       <Icon.Flame className="h-4 w-4 text-orange-500" />
-      <h6 className="font-bold text-sm text-gray-900">Trending</h6>
+      <h6 className="font-bold text-sm text-gray-900 dark:text-white">Trending</h6>
     </div>
     <div className="space-y-1">
       {[
@@ -600,7 +601,7 @@ const TrendingTopics: React.FC = () => (
           className="flex items-center justify-between py-2 px-2 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer"
         >
           <div>
-            <div className="font-medium text-sm text-gray-900">#{item.topic}</div>
+            <div className="font-medium text-sm text-gray-900 dark:text-white">#{item.topic}</div>
             <div className="text-xs text-gray-500">{item.posts}</div>
           </div>
           <span className="text-xs font-medium text-emerald-600">{item.trend}</span>
@@ -612,14 +613,14 @@ const TrendingTopics: React.FC = () => (
 
 const SuggestedConnections: React.FC = () => (
   <Card className="p-4 mb-6">
-    <h6 className="font-bold text-sm text-gray-900 mb-3">People to Follow</h6>
+    <h6 className="font-bold text-sm text-gray-900 dark:text-white mb-3">People to Follow</h6>
     <div className="space-y-2">
       {friends.map((f) => (
         <div key={f.id} className="flex items-center gap-3 py-1">
           <Avatar src={f.avatar} alt={f.name} size={32} />
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1">
-              <span className="font-medium text-sm text-gray-900 truncate">{f.name}</span>
+              <span className="font-medium text-sm text-gray-900 dark:text-white truncate">{f.name}</span>
               {f.verified && <Icon.Verified className="h-3 w-3 text-blue-500 flex-shrink-0" />}
             </div>
             <p className="text-xs text-gray-500 truncate">{f.headline}</p>
@@ -635,7 +636,7 @@ const SuggestedConnections: React.FC = () => (
 
 const ActiveGroups: React.FC = () => (
   <Card className="p-4">
-    <h6 className="font-bold text-sm text-gray-900 mb-3">Your Groups</h6>
+    <h6 className="font-bold text-sm text-gray-900 dark:text-white mb-3">Your Groups</h6>
     <div className="space-y-1">
       {groups.map((g) => (
         <div key={g.id} className="flex items-center gap-3 py-2 px-2 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer">
@@ -643,7 +644,7 @@ const ActiveGroups: React.FC = () => (
             <Icon.Home className="h-4 w-4 text-white" />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="font-medium text-sm text-gray-900 truncate">{g.name}</div>
+            <div className="font-medium text-sm text-gray-900 dark:text-white truncate">{g.name}</div>
             <div className="text-xs text-gray-500">{g.members.toLocaleString()} members</div>
           </div>
           {g.joined && <Badge variant="success">Joined</Badge>}
@@ -690,7 +691,9 @@ export default function ModernCommunityPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-cyan-50/30">
+    <>
+      <Navigation />
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-cyan-50/30 dark:from-gray-900 dark:via-gray-800/30 dark:to-gray-900">
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="grid grid-cols-12 gap-8">
           {/* LEFT (static sidebar) */}
@@ -745,5 +748,6 @@ export default function ModernCommunityPage() {
         </div>
       </div>
     </div>
+    </>
   )
 }
