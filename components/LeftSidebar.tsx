@@ -119,7 +119,7 @@ const LeftSidebar: React.FC = () => {
           <SectionTitle isCollapsed={collapsed.menu} onToggle={() => setCollapsed(prev => ({...prev, menu: !prev.menu}))}>Menu</SectionTitle>
           {!collapsed.menu && <div className="space-y-1 px-2 pb-2">
             <Item icon={<Icon.Home className="h-4 w-4" />} label="Lounge" active={activeKey === "lounge"} />
-            <Item icon={<Icon.Pen className="h-4 w-4" />} label="Base" active={activeKey === "base"} />
+            <Item icon={<Icon.Pen className="h-4 w-4" />} label="Base" active={activeKey === "base"} onClick={() => window.location.href = '/hub'} />
             <Item icon={<Icon.Flame className="h-4 w-4" />} label="Trending" active={activeKey === "trending"} />
             <Item icon={<Icon.Compass className="h-4 w-4" />} label="Explore" active={activeKey === "explore"} />
             <Item icon={<Icon.Hash className="h-4 w-4" />} label="All" active={activeKey === "all"} />
@@ -170,10 +170,10 @@ const LeftSidebar: React.FC = () => {
           {/* POLICIES */}
           <SectionTitle isCollapsed={collapsed.rules} onToggle={() => setCollapsed(prev => ({...prev, rules: !prev.rules}))}>Policies</SectionTitle>
           {!collapsed.rules && <div className="space-y-1 px-2 pb-2">
-            <Item icon={<Icon.Scale className="h-4 w-4" />} label="E-Commons Rules" />
-            <Item icon={<Icon.Gavel className="h-4 w-4" />} label="Privacy Policy" />
-            <Item icon={<Icon.FileText className="h-4 w-4" />} label="User Agreement" />
-            <Item icon={<Icon.Eye className="h-4 w-4" />} label="Accessibility" />
+            <Item icon={<Icon.Scale className="h-4 w-4" />} label="E-Commons Rules" onClick={() => window.location.href = '/Policies/e-commons-rules'} />
+            <Item icon={<Icon.Gavel className="h-4 w-4" />} label="Privacy Policy" onClick={() => window.location.href = '/Policies/privacy-policy'} />
+            <Item icon={<Icon.FileText className="h-4 w-4" />} label="User Agreement" onClick={() => window.location.href = '/Policies/user-agreement'} />
+            <Item icon={<Icon.Eye className="h-4 w-4" />} label="Accessibility" onClick={() => window.location.href = '/Policies/accessibility'} />
           </div>}
         </div>
       </div>
